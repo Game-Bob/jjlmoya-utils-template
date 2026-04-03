@@ -35,6 +35,13 @@ export interface ToolLocaleContent<TUI extends Record<string, string> = Record<s
   schemas: WithContext<Thing>[];
 }
 
+export interface ToolDefinition {
+  entry: PetToolEntry;
+  Component: unknown;
+  SEOComponent?: unknown;
+  BibliographyComponent?: unknown;
+}
+
 export interface CategoryLocaleContent {
   slug: string;
   title: string;
