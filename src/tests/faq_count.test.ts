@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import * as DATA from '../data';
+import type * as DATA from '../data';
 
 const TOOLS: typeof DATA.templateCategory[] = [];
 
