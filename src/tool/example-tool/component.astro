@@ -1,0 +1,57 @@
+---
+import './style.css';
+import type { ExampleToolUI } from './index';
+
+interface Props {
+  ui: ExampleToolUI;
+}
+
+const { ui } = Astro.props;
+---
+
+<div id="ex-root" class="ex-card" data-ui={JSON.stringify(ui)}>
+
+  <div class="ex-field">
+    <label class="ex-label" for="ex-input">{ui.labelInput}</label>
+    <textarea
+      id="ex-input"
+      class="ex-textarea"
+      placeholder={ui.placeholder}
+      rows={6}
+    ></textarea>
+  </div>
+
+  <div class="ex-stats">
+    <div class="ex-stat">
+      <span class="ex-stat-value" id="ex-chars">0</span>
+      <span class="ex-stat-label">{ui.labelChars}</span>
+    </div>
+    <div class="ex-stat">
+      <span class="ex-stat-value" id="ex-words">0</span>
+      <span class="ex-stat-label">{ui.labelWords}</span>
+    </div>
+    <div class="ex-stat">
+      <span class="ex-stat-value" id="ex-lines">0</span>
+      <span class="ex-stat-label">{ui.labelLines}</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const root     = document.getElementById('ex-root') as HTMLElement;
+  const textarea = root.querySelector('#ex-input')  as HTMLTextAreaElement;
+  const elChars  = root.querySelector('#ex-chars')  as HTMLElement;
+  const elWords  = root.querySelector('#ex-words')  as HTMLElement;
+  const elLines  = root.querySelector('#ex-lines')  as HTMLElement;
+
+  function update(): void {
+    const text = textarea.value;
+    elChars.textContent = String(text.length);
+    elWords.textContent = String(text.trim() === '' ? 0 : text.trim().split(/\s+/).length);
+    elLines.textContent = String(text === '' ? 0 : text.split('\n').length);
+  }
+
+  textarea.addEventListener('input', update);
+  update();
+</script>

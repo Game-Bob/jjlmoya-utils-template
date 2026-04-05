@@ -1,0 +1,120 @@
+.ex-card {
+  --ex-accent: #6366f1;
+  --ex-accent-glow: rgba(99, 102, 241, 0.15);
+  --ex-bg: #fff;
+  --ex-bg-muted: #f8fafc;
+  --ex-text: #0f172a;
+  --ex-text-muted: #64748b;
+  --ex-border: #e2e8f0;
+
+  position: relative;
+  width: 100%;
+  background: var(--ex-bg);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.07);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ex-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+}
+
+.dark .ex-card {
+  --ex-bg: #0f172a;
+  --ex-bg-muted: #1e293b;
+  --ex-text: #f1f5f9;
+  --ex-text-muted: #94a3b8;
+  --ex-border: rgba(255, 255, 255, 0.08);
+}
+
+.ex-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ex-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ex-text-muted);
+}
+
+.ex-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 14px 16px;
+  border: 1px solid var(--ex-border);
+  border-radius: 14px;
+  background: var(--ex-bg-muted);
+  color: var(--ex-text);
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.ex-textarea:focus {
+  border-color: var(--ex-accent);
+  box-shadow: 0 0 0 3px var(--ex-accent-glow);
+}
+
+.ex-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ex-stat {
+  background: var(--ex-bg-muted);
+  border: 1px solid var(--ex-border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ex-stat-value {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ex-accent);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.ex-stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ex-text-muted);
+}
+
+@media (max-width: 480px) {
+  .ex-card {
+    padding: 24px 16px;
+  }
+
+  .ex-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .ex-stat-value {
+    font-size: 1.6rem;
+  }
+}

@@ -15,4 +15,6 @@ export type {
   ToolDefinition,
 } from './types';
 
-export { ALL_TOOLS } from './tools';
+export { ALL_TOOLS, EXAMPLE_TOOL } from './tools';
+export type { ExampleToolUI, ExampleToolLocaleContent } from './tool/example-tool/index';
+export { ExampleToolComponent, ExampleToolSEO, ExampleToolBibliography } from './tool/example-tool/index';
