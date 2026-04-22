@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type * as DATA from '../data';
 
-const TOOLS: typeof DATA.templateCategory[] = [];
+const TOOLS: typeof DATA.audiovisualCategory[] = [];
 
 describe('FAQ Content Validation', () => {
   TOOLS.forEach((entry) => {
@@ -16,3 +16,4 @@ describe('FAQ Content Validation', () => {
     expect(TOOLS.length).toBe(0);
   });
 });
+

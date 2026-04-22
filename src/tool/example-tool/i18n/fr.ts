@@ -1,3 +1,4 @@
+import { bibliography } from '../bibliography';
 import type { WithContext, FAQPage, HowTo, SoftwareApplication } from 'schema-dts';
 import type { ExampleToolUI, ExampleToolLocaleContent } from '../index';
 
@@ -12,8 +13,7 @@ const ui: ExampleToolUI = {
   labelWords: 'Mots',
   labelLines: 'Lignes',
   placeholder: 'Tapez ou collez votre texte ici…',
-  faqTitle: 'Questions fréquentes',
-  bibliographyTitle: 'Références',
+  faqTitle: 'Questions fréquentes': 'Références',
 };
 
 const faq: ExampleToolLocaleContent['faq'] = [
@@ -32,10 +32,6 @@ const faq: ExampleToolLocaleContent['faq'] = [
 const howTo: ExampleToolLocaleContent['howTo'] = [
   { name: '1. Collez ou tapez votre texte', text: 'Utilisez la zone de texte fournie.' },
   { name: '2. Lisez les résultats', text: 'Les compteurs se mettent à jour en temps réel.' },
-];
-
-const bibliography: ExampleToolLocaleContent['bibliography'] = [
-  { name: 'Unicode Standard — Character Counting', url: 'https://www.unicode.org/standard/standard.html' },
 ];
 
 const seo: ExampleToolLocaleContent['seo'] = [
@@ -95,9 +91,7 @@ export const content: ExampleToolLocaleContent = {
   ui,
   seo,
   faqTitle: ui.faqTitle,
-  faq,
-  bibliographyTitle: ui.bibliographyTitle,
-  bibliography,
+  faq: ui.bibliography,
   howTo,
   schemas: [faqSchema, howToSchema, appSchema],
 };

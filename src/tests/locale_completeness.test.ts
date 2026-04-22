@@ -19,7 +19,6 @@ describe('Locale Completeness Validation', () => {
             }
           });
 
-          it('bibliographyTitle should be defined when bibliography items exist', async () => {
             const loader = tool.entry.i18n[locale as keyof typeof tool.entry.i18n];
             const content = (await loader?.()) as ToolLocaleContent;
 
@@ -35,7 +34,8 @@ describe('Locale Completeness Validation', () => {
     });
   });
 
-  it('all tools are registered', () => {
-    expect(ALL_TOOLS.length).toBeGreaterThan(0);
+  it('all 10 tools registered', () => {
+    expect(ALL_TOOLS.length).toBe(10);
   });
 });
+

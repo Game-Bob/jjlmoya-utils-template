@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import * as DATA from '../data';
 
 const ENTRIES = [
-  { id: 'templateCategory', i18n: DATA.templateCategory.i18n },
+  { id: 'audiovisualCategory', i18n: DATA.audiovisualCategory.i18n },
 ];
 
 describe('SEO Content Length Validation', () => {
@@ -19,3 +19,4 @@ describe('SEO Content Length Validation', () => {
     });
   });
 });
+
