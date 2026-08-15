@@ -12,8 +12,9 @@ const ui: ExampleToolUI = {
   labelChars: 'Caracteres',
   labelWords: 'Palabras',
   labelLines: 'Líneas',
-  placeholder: 'Escribe o pega aquí tu texto…',
-  faqTitle: 'Preguntas frecuentes': 'Referencias',
+  placeholder: 'Escribe o pega aquí tu texto...',
+  faqTitle: 'Preguntas frecuentes',
+  bibliographyTitle: 'Referencias',
 };
 
 const faq: ExampleToolLocaleContent['faq'] = [

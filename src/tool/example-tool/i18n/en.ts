@@ -5,22 +5,23 @@ import type { ExampleToolUI, ExampleToolLocaleContent } from '../index';
 const slug = 'character-counter';
 const title = 'Character, Word and Line Counter';
 const description =
-  'Free online tool to instantly count characters, words and lines in any text — no sign-up required.';
+  'Free online tool to instantly count characters, words and lines in any text - no sign-up required.';
 
 const ui: ExampleToolUI = {
   labelInput: 'Enter your text',
   labelChars: 'Characters',
   labelWords: 'Words',
   labelLines: 'Lines',
-  placeholder: 'Type or paste your text here…',
-  faqTitle: 'Frequently asked questions': 'References',
+  placeholder: 'Type or paste your text here...',
+  faqTitle: 'Frequently asked questions',
+  bibliographyTitle: 'References',
 };
 
 const faq: ExampleToolLocaleContent['faq'] = [
   {
     question: 'Are spaces counted as characters?',
     answer:
-      'Yes. The counter includes all Unicode characters, including spaces, line breaks and punctuation marks — consistent with how most text editors behave.',
+      'Yes. The counter includes all Unicode characters, including spaces, line breaks and punctuation marks - consistent with how most text editors behave.',
   },
   {
     question: 'How is a "word" defined?',

@@ -45,28 +45,31 @@ describe('Category Validation', () => {
           `Category locale "${locale}" slug ("${content.slug}") cannot end with a 2-letter language code (e.g., -ja, -ru, -ko).`,
         ).not.toMatch(/-[a-z]{2}$/);
 
-        if (locale !== 'en') {
-          if (sharingLocales.includes(locale)) {
-            expect(
-              content.slug,
-              `Category locale "${locale}" must use the same slug as "en" ("${enSlug}").`,
-            ).toBe(enSlug);
-          } else {
-            expect(
-              content.slug,
-              `Category locale "${locale}" has the same slug as "en" ("${enSlug}"). Cada slug tiene que estar en su propio idioma`,
-            ).not.toBe(enSlug);
-
-            if (slugs.has(content.slug)) {
-              const previousLocale = slugs.get(content.slug);
-              expect(
-                false,
-                `Category locales "${locale}" and "${previousLocale}" share the same slug ("${content.slug}"). Cada slug tiene que estar en su propia idioma`,
-              ).toBe(true);
-            }
-            slugs.set(content.slug, locale);
-          }
+        if (locale === 'en') {
+          continue;
         }
+
+        if (sharingLocales.includes(locale)) {
+          expect(
+            content.slug,
+            `Category locale "${locale}" must use the same slug as "en" ("${enSlug}").`,
+          ).toBe(enSlug);
+          continue;
+        }
+
+        expect(
+          content.slug,
+          `Category locale "${locale}" has the same slug as "en" ("${enSlug}"). Cada slug tiene que estar en su propio idioma`,
+        ).not.toBe(enSlug);
+
+        if (slugs.has(content.slug)) {
+          const previousLocale = slugs.get(content.slug);
+          expect(
+            false,
+            `Category locales "${locale}" and "${previousLocale}" share the same slug ("${content.slug}"). Cada slug tiene que estar en su propia idioma`,
+          ).toBe(true);
+        }
+        slugs.set(content.slug, locale);
       }
     });
   });

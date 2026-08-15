@@ -12,8 +12,9 @@ const ui: ExampleToolUI = {
   labelChars: 'Caractères',
   labelWords: 'Mots',
   labelLines: 'Lignes',
-  placeholder: 'Tapez ou collez votre texte ici…',
-  faqTitle: 'Questions fréquentes': 'Références',
+  placeholder: 'Tapez ou collez votre texte ici...',
+  faqTitle: 'Questions fréquentes',
+  bibliographyTitle: 'Références',
 };
 
 const faq: ExampleToolLocaleContent['faq'] = [
@@ -23,9 +24,9 @@ const faq: ExampleToolLocaleContent['faq'] = [
       'Oui. Le compteur inclut tous les caractères Unicode, y compris les espaces, les sauts de ligne et la ponctuation, conformément au comportement de la plupart des éditeurs de texte.',
   },
   {
-    question: 'Comment définit-on un « mot » ?',
+    question: 'Comment définit-on un \" mot \" ?',
     answer:
-      'Un mot est toute séquence de caractères non espacés. Par exemple, « bonjour-monde » compte comme un seul mot, alors que « bonjour monde » en compte deux.',
+      'Un mot est toute séquence de caractères non espacés. Par exemple, \" bonjour-monde \" compte comme un seul mot, alors que \" bonjour monde \" en compte deux.',
   },
 ];
 
