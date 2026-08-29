@@ -1,0 +1,155 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+
+const presets = [
+  { id: 'casual', label: 'Casual', mode: 'normal', time: 120, increment: 0, delay: 0 },
+  { id: 'blitz', label: 'Blitz', mode: 'normal', time: 300, increment: 0, delay: 0 },
+  { id: 'strategic', label: 'Strategic', mode: 'fischer', time: 1800, increment: 10, delay: 0 },
+  { id: 'hourglass', label: 'Hourglass', mode: 'hourglass', time: 60, increment: 0, delay: 0 },
+  { id: 'cooperative', label: 'Cooperative', mode: 'normal', time: 600, increment: 0, delay: 0 },
+  { id: 'custom', label: 'Custom', mode: 'normal', time: 300, increment: 0, delay: 0 },
+];
+
+const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'teal', 'pink'] as const;
+---
+
+<div id="setup-panel" class="timer-setup-panel">
+  <div class="setup-grid">
+    <div class="setup-card settings-column">
+      <div class="settings-group">
+        <h4>{ui.presetsTitle || 'Presets'}</h4>
+        <div class="presets-grid">
+          {presets.map((preset) => (
+            <button
+              type="button"
+              class="preset-card"
+              data-preset={preset.id}
+              data-mode={preset.mode}
+              data-time={preset.time}
+              data-increment={preset.increment}
+              data-delay={preset.delay}
+            >
+              <span class="preset-name">{preset.label}</span>
+              <span class="preset-meta">
+                {preset.id === 'custom' ? 'Manual' : `${Math.floor(preset.time / 60)}m ${preset.increment > 0 ? `+${preset.increment}s` : ''}`}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h4>{ui.timeControlTitle || 'Time Control'}</h4>
+        <div class="settings-grid">
+          <div class="control-box">
+            <label class="config-label" for="setting-mode">{ui.modeLabel || 'Mode'}</label>
+            <select id="setting-mode" class="select-input">
+              <option value="normal">{ui.modeNormal || 'Normal Count'}</option>
+              <option value="fischer">{ui.modeFischer || 'Fischer (Increment)'}</option>
+              <option value="bronstein">{ui.modeBronstein || 'Bronstein (Delay)'}</option>
+              <option value="hourglass">{ui.modeHourglass || 'Hourglass'}</option>
+              <option value="turn">{ui.modeTurn || 'Turn Reset'}</option>
+            </select>
+          </div>
+
+          <div class="control-box">
+            <span class="config-label">{ui.baseTimeLabel || 'Base Time'}</span>
+            <div class="time-inputs-container">
+              <div class="time-adjuster-group">
+                <button type="button" class="time-adj-btn dec-min" aria-label="Decrease minutes">-</button>
+                <input type="number" id="setting-mins" class="num-input" value="5" min="0" max="99" aria-label="Minutes" />
+                <button type="button" class="time-adj-btn inc-min" aria-label="Increase minutes">+</button>
+                <span class="time-unit-lbl">m</span>
+              </div>
+              <span class="time-sep">:</span>
+              <div class="time-adjuster-group">
+                <button type="button" class="time-adj-btn dec-sec" aria-label="Decrease seconds">-</button>
+                <input type="number" id="setting-secs" class="num-input" value="0" min="0" max="59" aria-label="Seconds" />
+                <button type="button" class="time-adj-btn inc-sec" aria-label="Increase seconds">+</button>
+                <span class="time-unit-lbl">s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-box active-fischer active-bronstein">
+            <label class="config-label" for="setting-increment">{ui.incrementLabel || 'Increment/Delay'}</label>
+            <div class="number-input-wrapper">
+               <input type="number" id="setting-increment" class="num-input-full" value="0" min="0" max="99" />
+               <span class="unit-label">s</span>
+            </div>
+          </div>
+
+          <div class="control-box">
+            <label class="config-label" for="setting-warning">{ui.warningTimeLabel || 'Warning Threshold'}</label>
+            <div class="number-input-wrapper">
+              <input type="number" id="setting-warning" class="num-input-full" value="30" min="0" max="99" />
+              <span class="unit-label">s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h4>{ui.audioTitle || 'Audio Alerts'}</h4>
+        <div class="audio-toggles">
+          <label class="toggle-control">
+            <input type="checkbox" id="toggle-sound" checked />
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">{ui.soundAlerts || 'Sound Effects'}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-card players-column">
+      <div class="settings-group">
+        <h4>{ui.playersTitle || 'Players'}</h4>
+        <div class="player-input-block">
+          <div class="player-input-row-nowrap">
+            <input type="text" id="new-player-name" class="text-input" placeholder={ui.playerNamePlaceholder} aria-label={ui.playerNamePlaceholder || 'New player name'} maxlength="15" />
+            <button type="button" id="add-player-btn" class="btn-action primary">
+              <Icon name="mdi:plus" width="20" height="20" />
+            </button>
+          </div>
+          <div class="color-picker-row">
+            <div class="color-picker-grid">
+              {colors.map((color) => (
+                <button
+                  type="button"
+                  class={`color-dot color-${color}`}
+                  data-color={color}
+                  aria-label={`Select ${color}`}
+                ></button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-group list-group">
+        <div class="player-list-header">
+          <span>{ui.playersAdded || 'Added Players'}</span>
+          <span id="player-count" class="count-badge">0</span>
+        </div>
+        <div id="player-list-container" class="player-list-scroll"></div>
+        <div id="empty-players-hint" class="players-hint">
+          <Icon name="mdi:account-group-outline" width="40" height="40" />
+          <p>{ui.noPlayersHint || 'Add at least 2 players to start'}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="setup-actions">
+    <button type="button" id="start-game-btn" class="start-hero-btn" disabled>
+      <Icon name="mdi:play" width="28" height="28" />
+      <span>{ui.startGame || 'Start Game'}</span>
+    </button>
+  </div>
+</div>

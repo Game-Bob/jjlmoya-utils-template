@@ -1,0 +1,75 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div id="duel-timer-panel" class="timer-duel-panel" style="display: none">
+  <div class="duel-player-side" id="duel-p1" data-player-id="">
+    <div class="duel-player-container">
+      <div class="side-header">
+        <span class="player-name-lbl" id="duel-p1-name">Player 1</span>
+        <button type="button" class="side-rotate-btn" title="Rotate Display">
+          <Icon name="mdi:rotate-3d-variant" width="20" height="20" />
+        </button>
+      </div>
+      <div class="side-timer" id="duel-p1-timer">00:00</div>
+      <div class="side-meta">
+        <span class="rounds-count-lbl" id="duel-p1-rounds">Turns: 0</span>
+        <span class="side-status-badge" id="duel-p1-status">READY</span>
+      </div>
+    </div>
+    <div class="duel-ripple-effect"></div>
+  </div>
+
+  <div class="duel-controls-bar">
+    <button type="button" class="ctrl-bar-btn" id="duel-back-btn" title="Back to Setup">
+      <Icon name="mdi:cog" width="24" height="24" />
+    </button>
+
+    <div class="round-counter-display">
+      <span class="round-lbl">{ui.roundLabel || 'Round'}</span>
+      <span class="round-num" id="duel-round-number">1</span>
+    </div>
+
+    <button type="button" class="ctrl-bar-btn primary-ctrl" id="duel-pause-btn" title="Pause Game">
+      <Icon name="mdi:pause" width="28" height="28" />
+    </button>
+
+    <button type="button" class="ctrl-bar-btn" id="duel-reset-btn" title="Reset Game">
+      <Icon name="mdi:refresh" width="24" height="24" />
+    </button>
+  </div>
+
+  <div class="duel-player-side" id="duel-p2" data-player-id="">
+    <div class="duel-player-container">
+      <div class="side-header">
+        <span class="player-name-lbl" id="duel-p2-name">Player 2</span>
+        <button type="button" class="side-rotate-btn" title="Rotate Display">
+          <Icon name="mdi:rotate-3d-variant" width="20" height="20" />
+        </button>
+      </div>
+      <div class="side-timer" id="duel-p2-timer">00:00</div>
+      <div class="side-meta">
+        <span class="rounds-count-lbl" id="duel-p2-rounds">Turns: 0</span>
+        <span class="side-status-badge" id="duel-p2-status">READY</span>
+      </div>
+    </div>
+    <div class="duel-ripple-effect"></div>
+  </div>
+
+  <div id="duel-paused-overlay" class="duel-overlay paused-overlay" style="display: none">
+    <div class="overlay-card">
+      <Icon name="mdi:pause-circle-outline" width="64" height="64" />
+      <h3>{ui.pausedOverlay || 'Game Paused'}</h3>
+      <button type="button" class="resume-hero-btn" id="duel-resume-btn">
+        <Icon name="mdi:play" width="24" height="24" />
+        <span>{ui.resumeGame || 'Resume'}</span>
+      </button>
+    </div>
+  </div>
+</div>

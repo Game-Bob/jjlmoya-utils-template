@@ -1,0 +1,95 @@
+---
+import './fantasy-runes-translator.css';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="runes-wrap" data-ui={JSON.stringify(ui)}>
+  <div class="runes-top-bar">
+    <div class="alphabet-pills" id="alphabet-pills">
+      <button type="button" class="pill" data-alphabet="elder-futhark"><span class="pill-rune">&#x16A8;</span><span class="pill-label">{ui.elderFuthark}</span></button>
+      <button type="button" class="pill" data-alphabet="anglo-saxon"><span class="pill-rune">&#x16AA;</span><span class="pill-label">{ui.angloSaxon}</span></button>
+      <button type="button" class="pill" data-alphabet="fantasy"><span class="pill-rune">&#x16DF;</span><span class="pill-label">{ui.fantasy}</span></button>
+      <button type="button" class="pill" data-alphabet="theban"><span class="pill-rune">&#x16A0;</span><span class="pill-label">{ui.theban}</span></button>
+      <button type="button" class="pill" data-alphabet="enochian"><span class="pill-rune">&#x16C1;</span><span class="pill-label">{ui.enochian}</span></button>
+      <button type="button" class="pill" data-alphabet="daemonic"><span class="pill-rune">&#x16CA;</span><span class="pill-label">{ui.daemonic}</span></button>
+      <button type="button" class="pill" data-alphabet="ogham"><span class="pill-rune">&#x16D7;</span><span class="pill-label">{ui.ogham}</span></button>
+    </div>
+    <button type="button" class="seed-cog" id="seed-toggle-btn" title="Seed">&#x2699;</button>
+  </div>
+
+  <div class="seed-drawer" id="seed-drawer">
+    <div class="seed-inner">
+      <div class="seed-field">
+        <input type="number" id="runes-seed" placeholder={ui.seedPlaceholder} aria-label={ui.seedPlaceholder || "Seed"} min="1" max="999999" />
+        <button type="button" class="seed-shuffle" id="seed-shuffle-btn">&#x21BB;</button>
+      </div>
+      <span class="seed-tag" id="seed-tag">{ui.seedApplied}</span>
+      <span class="seed-hint">Shuffles which rune matches each letter</span>
+    </div>
+  </div>
+
+  <div class="runes-input-area">
+    <input type="text" id="runes-input" placeholder={ui.inputPlaceholder} aria-label={ui.inputPlaceholder || "Input text"} autocomplete="off" />
+  </div>
+
+  <div class="runes-output" id="runes-output">
+    <div class="runes-output-empty">
+      <span class="empty-rune">&#x16DF;</span>
+      <span class="empty-label">{ui.noInput}</span>
+    </div>
+  </div>
+
+  <div class="detail-card" id="detail-card">
+    <div class="detail-row">
+      <span class="detail-lbl">NAME</span>
+      <span class="detail-val" id="detail-name"></span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-lbl">MEANING</span>
+      <span class="detail-val" id="detail-meaning"></span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-lbl">SOUND</span>
+      <span class="detail-val" id="detail-phonetic"></span>
+    </div>
+  </div>
+
+  <div class="runes-bottom-bar">
+    <button type="button" class="bot-btn gm-reveal" id="runes-gm-btn">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      {ui.gmMode}
+    </button>
+    <div class="bot-spacer"></div>
+    <button type="button" class="bot-btn" id="runes-copy-btn" title={ui.copy}>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
+    <button type="button" class="bot-btn" id="runes-clear-btn" title={ui.clear}>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button type="button" class="bot-btn" id="runes-ref-all-btn" title="Full Alphabet">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </button>
+    <button type="button" class="bot-btn" id="runes-ref-found-btn" title="Discovered">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="ref-overlay" id="ref-overlay">
+  <button type="button" class="ref-close" id="ref-close-btn">&#x2715;</button>
+  <div class="ref-title" id="ref-title">Rune Dictionary</div>
+  <div class="ref-grid" id="ref-grid"></div>
+</div>
+
+<div class="gm-overlay" id="gm-overlay">
+  <div class="gm-particles" id="gm-particles"></div>
+  <button type="button" class="gm-exit" id="gm-exit-btn">{ui.exitGmMode}</button>
+  <div class="gm-runes" id="gm-runes"></div>
+</div>
+
+<script src="./client.ts"></script>

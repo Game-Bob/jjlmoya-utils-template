@@ -1,0 +1,16 @@
+---
+import { SEORenderer } from '@jjlmoya/utils-shared';
+import { tokenStampStudio } from './index';
+import type { KnownLocale } from '../../types';
+
+interface Props {
+  locale?: KnownLocale;
+}
+
+const { locale = 'en' } = Astro.props as Props;
+const loader = tokenStampStudio.i18n[locale] || tokenStampStudio.i18n.en;
+const content = await loader?.();
+if (!content) return null;
+---
+
+{content.seo?.length > 0 && <SEORenderer content={{ locale, sections: content.seo }} />}

@@ -1,0 +1,66 @@
+---
+import { buildMapSvg } from './dom-views';
+import { evaluateSettlement } from './evaluator';
+import { DEFAULT_CONFIG, generateSettlement } from './logic';
+import type { SettlementMapUI } from './ui';
+import './rpg-settlement-exploration-map-generator.css';
+interface Props { ui: SettlementMapUI; }
+const { ui } = Astro.props;
+const initialMap = generateSettlement(DEFAULT_CONFIG);
+const initialEvaluation = evaluateSettlement(initialMap, ui);
+const builtInServices = ['tavern', 'smithy', 'temple', 'market', 'stable', 'hall'] as const;
+---
+<div class="rsm" data-settlement-tool>
+  <script is:inline type="application/json" data-ui set:html={JSON.stringify(ui)} />
+  <section class="rsm-studio" aria-label={ui.mapRegionLabel}>
+    <div class="rsm-controls">
+      <div class="rsm-intro">{ui.intro}</div>
+      <div class="rsm-separator"></div>
+      <div class="rsm-field">
+        <label for="rsm-seed">{ui.seedLabel}</label>
+        <div class="rsm-seed-row"><input id="rsm-seed" name="seed" type="text" value={DEFAULT_CONFIG.seed} maxlength="48" spellcheck="false" /><button type="button" class="rsm-icon-button" data-random-seed aria-label={ui.randomSeed}>New</button></div>
+        <small>{ui.seedHint}</small>
+      </div>
+      <div class="rsm-field">
+        <span class="rsm-label">{ui.environmentLabel}</span>
+        <div class="rsm-choice-row" data-environments>{(['forest', 'plains', 'coast', 'river', 'mountain'] as const).map((environment) => <button type="button" class:list={{ 'rsm-choice': true, 'is-active': environment === DEFAULT_CONFIG.environment }} data-environment={environment} aria-pressed={environment === DEFAULT_CONFIG.environment}>{ui[environment]}</button>)}</div>
+      </div>
+      <div class="rsm-field">
+        <span class="rsm-label">{ui.styleLabel}</span>
+        <small>{ui.styleHint}</small>
+        <div class="rsm-choice-row" data-styles>{(['medieval', 'edo', 'sahelian', 'timber', 'stone', 'coastal', 'highland'] as const).map((style) => <button type="button" class:list={{ 'rsm-choice': true, 'is-active': style === DEFAULT_CONFIG.style }} data-style={style} aria-pressed={style === DEFAULT_CONFIG.style}>{ui[`style${style.charAt(0).toUpperCase()}${style.slice(1)}`]}</button>)}</div>
+      </div>
+      <div class="rsm-field">
+        <span class="rsm-label">{ui.sizeLabel}</span>
+        <div class="rsm-size-row" data-sizes>
+          <button type="button" class="rsm-size-button" data-size="hamlet" aria-pressed="false"><strong>{ui.hamlet}</strong><span>34 x 24</span><small>{ui.hamletHint}</small></button>
+          <button type="button" class="rsm-size-button is-active" data-size="village" aria-pressed="true"><strong>{ui.village}</strong><span>42 x 28</span><small>{ui.villageHint}</small></button>
+          <button type="button" class="rsm-size-button" data-size="town" aria-pressed="false"><strong>{ui.town}</strong><span>52 x 34</span><small>{ui.townHint}</small></button>
+        </div>
+      </div>
+      <div class="rsm-field rsm-home-field">
+        <label for="rsm-homes">{ui.homesLabel}<output data-homes-output>{DEFAULT_CONFIG.homes}</output></label>
+        <input id="rsm-homes" name="homes" type="range" min="3" max="42" value={DEFAULT_CONFIG.homes} data-homes />
+        <small>{ui.homesHint}</small>
+      </div>
+      <fieldset class="rsm-field rsm-services">
+        <legend>{ui.servicesLabel}</legend>
+        <small>{ui.serviceListHint}</small>
+        <div class="rsm-service-row" data-service-list>{builtInServices.map((service) => <div class="rsm-service-entry" data-service-entry={service}><label class="rsm-service-chip"><input type="checkbox" value={service} data-service-option checked={DEFAULT_CONFIG.services.includes(service)} /><span>{ui[`service${service.charAt(0).toUpperCase()}${service.slice(1)}`]}</span></label></div>)}</div>
+        <div class="rsm-add-service"><input id="rsm-new-service" type="text" data-new-service aria-label={ui.newServicePlaceholder} placeholder={ui.newServicePlaceholder} maxlength="28" /><button type="button" data-add-service>{ui.addService}</button></div>
+      </fieldset>
+      <button type="button" class="rsm-generate" data-generate>{ui.generate}</button>
+    </div>
+    <div class="rsm-map-column">
+      <div class="rsm-map-heading"><div><span class="rsm-eyebrow">{ui.mapSummary}</span><strong data-terrain>{initialEvaluation.terrainLabel}</strong></div><span class="rsm-badge" data-badge>{initialEvaluation.badge}</span></div>
+      <div class="rsm-map-frame"><div class="rsm-map-host" data-map-host set:html={buildMapSvg(initialMap, ui)}></div><div class="rsm-map-help">{ui.clickHint}</div><div class="rsm-context-menu" data-context-menu hidden role="menu" aria-label={ui.contextMenuLabel}><button type="button" data-context-tool="select" role="menuitem">{ui.contextInspect}</button><button type="button" data-context-tool="building" role="menuitem">{ui.contextBuilding}</button><button type="button" data-context-tool="path" role="menuitem">{ui.contextPath}</button><button type="button" data-context-tool="water" role="menuitem">{ui.contextWater}</button><button type="button" data-context-tool="tree" role="menuitem">{ui.contextTree}</button><button type="button" data-context-tool="erase" role="menuitem">{ui.contextErase}</button></div></div>
+      <div class="rsm-stats" aria-live="polite"><div><span>{ui.buildings}</span><strong data-building-count>{initialEvaluation.buildingCount}</strong></div><div><span>{ui.paths}</span><strong data-path-count>{initialEvaluation.pathCount}</strong></div><div><span>{ui.services}</span><strong data-service-count>{initialEvaluation.serviceCount}</strong></div><div><span>{ui.terrain}</span><strong data-water-count>{initialEvaluation.waterCount}</strong></div></div>
+      <div class="rsm-actions"><button type="button" class="rsm-action-primary" data-share>{ui.shareLink}</button><button type="button" data-export-png>{ui.exportPng}</button><button type="button" data-export-svg>{ui.exportSvg}</button><details class="rsm-data-menu"><summary>{ui.mapData}</summary><div><button type="button" data-export-json>{ui.exportJson}</button><label><span>{ui.importJson}</span><input type="file" accept="application/json,.json" data-import-json /></label></div></details></div>
+      <p class="rsm-status" data-status aria-live="polite"></p>
+    </div>
+  </section>
+</div>
+<script>
+  import { mountSettlementMap } from './controller';
+  mountSettlementMap();
+</script>

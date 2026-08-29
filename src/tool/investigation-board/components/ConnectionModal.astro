@@ -1,0 +1,49 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="modal-overlay" id="connection-modal-overlay">
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h3 id="modal-title" class="modal-heading">{labels.addConnection}</h3>
+      <button type="button" class="btn-close-modal" id="close-modal-btn" aria-label={labels.close}>
+        &times;
+      </button>
+    </div>
+
+    <form class="modal-form" id="connection-form" onSubmit="event.preventDefault();">
+      <div class="form-group">
+        <label for="connection-source">{labels.sourceCard}</label>
+        <select id="connection-source" class="form-control" required></select>
+      </div>
+
+      <div class="form-group">
+        <label for="connection-target">{labels.targetCard}</label>
+        <select id="connection-target" class="form-control" required></select>
+      </div>
+
+      <div class="form-group">
+        <label for="connection-text">{labels.connectionLabel}</label>
+        <input type="text" id="connection-text" class="form-control" required />
+      </div>
+
+      <div class="form-group">
+        <label for="connection-color-picker">{labels.connectionColor}</label>
+        <input type="color" id="connection-color-picker" class="form-control color-picker" value="#f43f5e" />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="save-connection-btn" class="btn btn-primary">
+          {labels.save}
+        </button>
+        <button type="button" id="cancel-connection-btn" class="btn btn-secondary">
+          {labels.cancel}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

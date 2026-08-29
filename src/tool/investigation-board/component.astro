@@ -1,0 +1,23 @@
+---
+import ControlPanel from './components/ControlPanel.astro';
+import BoardCanvas from './components/BoardCanvas.astro';
+import CardDrawer from './components/CardDrawer.astro';
+import ConnectionModal from './components/ConnectionModal.astro';
+import ContextMenu from './components/ContextMenu.astro';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="tool-main-card investigation-board-main" data-ui={JSON.stringify(ui)}>
+  <ControlPanel labels={ui} />
+  <BoardCanvas labels={ui} />
+  <CardDrawer labels={ui} />
+  <ConnectionModal labels={ui} />
+  <ContextMenu labels={ui} />
+</div>
+
+<script src="./client.ts"></script>

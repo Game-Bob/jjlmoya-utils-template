@@ -1,0 +1,23 @@
+---
+import './rpg-initiative-tracker.css';
+import AddForm from './components/AddForm.astro';
+import CombatantList from './components/CombatantList.astro';
+import TurnControls from './components/TurnControls.astro';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="init-main-wrapper" data-ui={JSON.stringify(ui)}>
+  <div class="init-header">
+    <h2>{ui.title}</h2>
+  </div>
+  <AddForm labels={ui} />
+  <CombatantList labels={ui} />
+  <TurnControls labels={ui} />
+</div>
+
+<script src="./client.ts"></script>

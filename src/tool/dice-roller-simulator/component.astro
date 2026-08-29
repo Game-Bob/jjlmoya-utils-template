@@ -1,0 +1,165 @@
+---
+import DiceGrid from "./components/DiceGrid.astro";
+import RollHistorySection from "./components/RollHistorySection.astro";
+import StatsPanel from "./components/StatsPanel.astro";
+import RollResultBanner from "./components/RollResultBanner.astro";
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="tool-main-card" data-ui={JSON.stringify(ui)}>
+  <div class="tabletop-gaming-dashboard">
+    <div class="forge-and-tray-grid">
+      <DiceGrid labels={ui} />
+
+      <div class="dashboard-center">
+        <div class="rolling-tray-container">
+          <div class="tray-rim">
+            <div class="tray-felt" id="roll-arena">
+              <div class="felt-placeholder" id="arena-placeholder">
+                <svg
+                  viewBox="0 0 100 100"
+                  class="felt-crest-svg"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-opacity="0.15"
+                    stroke-width="1"></circle>
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="40"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-opacity="0.08"
+                    stroke-width="1"
+                    stroke-dasharray="3,3"></circle>
+
+                  <polygon
+                    points="50,15 80,32 80,68 50,85 20,68 20,32"
+                    fill="currentColor"
+                    fill-opacity="0.03"
+                    stroke="currentColor"
+                    stroke-width="2"></polygon>
+
+                  <polygon
+                    points="50,38 72,50 50,75 28,50"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"></polygon>
+                  <line
+                    x1="50"
+                    y1="15"
+                    x2="50"
+                    y2="38"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="20"
+                    y1="32"
+                    x2="28"
+                    y2="50"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="80"
+                    y1="32"
+                    x2="72"
+                    y2="50"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="20"
+                    y1="68"
+                    x2="28"
+                    y2="50"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="80"
+                    y1="68"
+                    x2="72"
+                    y2="50"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="50"
+                    y1="85"
+                    x2="50"
+                    y2="75"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="28"
+                    y1="50"
+                    x2="50"
+                    y2="75"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+                  <line
+                    x1="72"
+                    y1="50"
+                    x2="50"
+                    y2="75"
+                    stroke="currentColor"
+                    stroke-width="1.5"></line>
+
+                  <text
+                    x="50"
+                    y="58"
+                    font-size="12"
+                    font-weight="900"
+                    text-anchor="middle"
+                    fill="currentColor">20</text
+                  >
+                </svg>
+                <p class="felt-hint-text">Add dice to roll</p>
+              </div>
+              <div class="felt-dice-container" id="dice-results-container">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <RollResultBanner />
+
+        <button type="button" id="roll-button" class="btn-roll-hero" disabled>
+          ROLL DICE
+        </button>
+      </div>
+    </div>
+
+    <div class="tabletop-extra-tabs">
+      <div class="tabs-nav">
+        <button
+          type="button"
+          class="extra-tab-btn active"
+          data-extra-tab="logs-panel">Roll Logs</button
+        >
+        <button type="button" class="extra-tab-btn" data-extra-tab="stats-panel"
+          >Statistics</button
+        >
+      </div>
+
+      <div class="extra-tabs-content">
+        <div class="extra-tab-pane active" id="logs-panel">
+          <RollHistorySection labels={ui} />
+        </div>
+        <div class="extra-tab-pane" id="stats-panel">
+          <StatsPanel labels={ui} />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./client.ts"></script>

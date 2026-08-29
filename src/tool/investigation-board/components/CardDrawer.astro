@@ -1,0 +1,73 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="card-drawer-overlay" id="card-drawer-overlay">
+  <div class="card-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="drawer-header">
+      <h2 id="drawer-title" class="drawer-heading">{labels.cardName}</h2>
+      <button type="button" class="btn-close-drawer" id="close-drawer-btn" aria-label={labels.close}>
+        &times;
+      </button>
+    </div>
+
+    <form class="drawer-form" id="drawer-form" onSubmit="event.preventDefault();">
+      <input type="hidden" id="edit-node-id" />
+
+      <div class="form-group">
+        <label for="edit-node-name">{labels.cardName}</label>
+        <input type="text" id="edit-node-name" class="form-control" required />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-node-category">{labels.cardCategory}</label>
+        <select id="edit-node-category" class="form-control">
+          <option value="character">{labels.character}</option>
+          <option value="clue">{labels.clue}</option>
+          <option value="location">{labels.location}</option>
+          <option value="item">{labels.item}</option>
+          <option value="custom">{labels.custom}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-node-description">{labels.cardDescription}</label>
+        <textarea id="edit-node-description" class="form-control" rows="2"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>{labels.cardNotes}</label>
+        <div id="edit-notes-list" class="notes-input-list"></div>
+        <button type="button" id="add-note-row-btn" class="btn btn-secondary btn-sm">+ Add Point</button>
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="edit-node-tags">{labels.cardTags}</label>
+        <input type="text" id="edit-node-tags" class="form-control" />
+      </div>
+
+      <div class="form-group" id="color-picker-group">
+        <label for="edit-node-color">{labels.cardColor}</label>
+        <input type="color" id="edit-node-color" class="form-control color-picker" />
+      </div>
+
+      <div class="drawer-actions">
+        <button type="button" id="save-node-btn" class="btn btn-primary">
+          {labels.save}
+        </button>
+        <button type="button" id="delete-node-btn" class="btn btn-danger">
+          {labels.delete}
+        </button>
+        <button type="button" id="cancel-node-btn" class="btn btn-secondary">
+          {labels.cancel}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

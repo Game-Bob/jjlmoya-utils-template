@@ -1,0 +1,36 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="stats-showcase-panel">
+  <div class="stats-glow-grid">
+    <div class="stat-glass-card">
+      <span class="stat-card-title">{labels.totalRolls || "Total Rolls"}</span>
+      <span id="total-rolls-val" class="stat-card-number">0</span>
+    </div>
+    <div class="stat-glass-card">
+      <span class="stat-card-title">{labels.averageRoll || "Average"}</span>
+      <span id="average-roll-val" class="stat-card-number">--</span>
+    </div>
+    <div class="stat-glass-card">
+      <span class="stat-card-title">{labels.lastRoll || "Last Roll"}</span>
+      <span id="last-roll-val" class="stat-card-number">--</span>
+    </div>
+  </div>
+
+  <div class="distribution-chart-wrapper">
+    <div class="chart-header">
+      <h4>Roll Outcomes Distribution</h4>
+      <span class="chart-subtitle">Frequency of totals</span>
+    </div>
+    <div class="css-chart-viewport">
+      <div id="distribution-chart-bars" class="distribution-bars-container">
+        <div class="chart-empty-state">No rolls recorded yet</div>
+      </div>
+    </div>
+  </div>
+</div>

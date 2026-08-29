@@ -1,0 +1,186 @@
+---
+import './hidden-role-dealer.css';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="hrd-card" data-tool="hidden-role-dealer" data-ui={JSON.stringify(ui)}>
+  <div id="view-setup">
+    <div class="hrd-setup-grid">
+      <div class="hrd-setup-section">
+        <div class="hrd-section-title">
+          <span>{ui.playerList}</span>
+          <button id="btn-clear-players" class="hrd-btn-secondary" type="button">
+            {ui.clearPlayers}
+          </button>
+        </div>
+        <div class="hrd-input-row">
+          <input
+            id="input-player-name"
+            class="hrd-input"
+            type="text"
+            placeholder={ui.addPlayerPlaceholder}
+            aria-label={ui.addPlayerPlaceholder || "Add player name"}
+            maxlength="20"
+          />
+          <button id="btn-add-player" class="hrd-btn-primary" type="button">
+            {ui.addPlayer}
+          </button>
+        </div>
+        <div id="players-list" class="hrd-players-container"></div>
+      </div>
+
+      <div class="hrd-setup-section">
+        <div class="hrd-section-title">
+          <span>{ui.presetsTitle}</span>
+        </div>
+        <div class="hrd-presets-list">
+          <button class="hrd-preset-card active" data-key="werewolf" type="button">
+            <div class="hrd-preset-name">{ui.werewolfName}</div>
+            <div class="hrd-preset-desc">{ui.werewolfDesc}</div>
+          </button>
+          <button class="hrd-preset-card" data-key="avalon" type="button">
+            <div class="hrd-preset-name">{ui.avalonName}</div>
+            <div class="hrd-preset-desc">{ui.avalonDesc}</div>
+          </button>
+          <button class="hrd-preset-card" data-key="hitler" type="button">
+            <div class="hrd-preset-name">{ui.hitlerName}</div>
+            <div class="hrd-preset-desc">{ui.hitlerDesc}</div>
+          </button>
+          <button class="hrd-preset-card" data-key="impostor" type="button">
+            <div class="hrd-preset-name">{ui.impostorPresetName}</div>
+            <div class="hrd-preset-desc">{ui.impostorPresetDesc}</div>
+          </button>
+          <button class="hrd-preset-card" data-key="custom" type="button">
+            <div class="hrd-preset-name">{ui.presetCustom}</div>
+            <div class="hrd-preset-desc">{ui.customDesc}</div>
+          </button>
+        </div>
+        <div id="impostor-settings" class="hrd-custom-section" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--dealer-border); padding-top: 1.5rem;">
+          <div class="hrd-section-title">
+            <span>{ui.impostorTitle}</span>
+          </div>
+          <div class="hrd-input-row" style="margin-bottom: 1rem;">
+            <label for="select-impostor-writer" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorWriterLabel}</span>
+              <select id="select-impostor-writer" class="hrd-select" style="width: 100%;">
+                <option value="random">{ui.impostorWriterRandom}</option>
+                <option value="preround">{ui.impostorWriterPreround}</option>
+              </select>
+              <div id="impostor-writer-desc" style="font-size: 0.75rem; color: var(--dealer-text-muted); margin-top: 0.25rem; line-height: 1.4;"></div>
+            </label>
+          </div>
+          <div id="impostor-secret-wrapper" class="hrd-input-row" style="margin-bottom: 1rem;">
+            <label for="input-impostor-secret" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorSharedSecretLabel}</span>
+              <input
+                id="input-impostor-secret"
+                class="hrd-input"
+                type="text"
+                placeholder={ui.impostorSharedSecretPlaceholder}
+                maxlength="50"
+              />
+            </label>
+          </div>
+          <div class="hrd-input-row" style="margin-bottom: 1rem;">
+            <label for="select-impostor-mode" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorModeLabel}</span>
+              <select id="select-impostor-mode" class="hrd-select" style="width: 100%;">
+                <option value="fixed">{ui.impostorModeFixed}</option>
+                <option value="percentage">{ui.impostorModePercentage}</option>
+                <option value="range">{ui.impostorModeRange}</option>
+              </select>
+            </label>
+          </div>
+          <div id="impostor-fixed-wrapper" class="hrd-input-row" style="margin-bottom: 1rem;">
+            <label for="select-impostor-fixed-count" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorFixedLabel}</span>
+              <select id="select-impostor-fixed-count" class="hrd-select" style="width: 100%;">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </label>
+          </div>
+          <div id="impostor-percent-wrapper" class="hrd-input-row" style="display: none; margin-bottom: 1rem;">
+            <label for="input-impostor-percent" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorPercentageLabel}</span>
+              <input
+                id="input-impostor-percent"
+                class="hrd-input"
+                type="number"
+                value="25"
+                min="10"
+                max="90"
+              />
+            </label>
+          </div>
+          <div id="impostor-range-wrapper" class="hrd-input-row" style="display: none; margin-bottom: 1rem; gap: 1rem;">
+            <label for="input-impostor-min" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorRangeMinLabel}</span>
+              <input
+                id="input-impostor-min"
+                class="hrd-input"
+                type="number"
+                value="1"
+                min="1"
+                max="10"
+              />
+            </label>
+            <label for="input-impostor-max" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+              <span>{ui.impostorRangeMaxLabel}</span>
+              <input
+                id="input-impostor-max"
+                class="hrd-input"
+                type="number"
+                value="2"
+                min="1"
+                max="10"
+              />
+            </label>
+          </div>
+        </div>
+        <div id="custom-roles-editor" class="hrd-custom-section" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--dealer-border); padding-top: 1.5rem;">
+          <div class="hrd-section-title">
+            <span>{ui.customRolesTitle}</span>
+          </div>
+          <div class="hrd-input-row" style="margin-bottom: 0.5rem;">
+            <input
+              id="input-role-name"
+              class="hrd-input"
+              type="text"
+              placeholder={ui.customRolePlaceholder}
+              aria-label={ui.customRolePlaceholder || "Role name"}
+              maxlength="20"
+              style="flex: 2;"
+            />
+            <select id="select-role-alignment" class="hrd-select" aria-label="Role alignment">
+              <option value="neutral">{ui.neutralLabel}</option>
+              <option value="good">{ui.goodLabel}</option>
+              <option value="evil">{ui.evilLabel}</option>
+            </select>
+            <button id="btn-add-role" class="hrd-btn-primary" type="button">
+              {ui.addPlayer}
+            </button>
+          </div>
+          <div id="custom-roles-list" class="hrd-players-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hrd-deal-action-panel">
+      <div id="deal-warning" class="hrd-warning-box" style="display: none;"></div>
+      <button id="btn-deal-roles" class="hrd-btn-primary" type="button">
+        {ui.dealRoles}
+      </button>
+    </div>
+  </div>
+
+  <div id="view-wizard" class="hrd-wizard-container" style="display: none;"></div>
+</div>
+
+<script src="./client.ts"></script>

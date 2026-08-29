@@ -1,0 +1,16 @@
+---
+import { Bibliography as SharedBibliography } from '@jjlmoya/utils-shared';
+import { scatterDirectionSelector } from './index';
+import type { KnownLocale } from '../../types';
+
+interface Props {
+  locale?: KnownLocale;
+}
+
+const { locale = 'en' } = Astro.props as Props;
+const loader = scatterDirectionSelector.i18n[locale] || scatterDirectionSelector.i18n.en;
+const content = await loader?.();
+if (!content) return null;
+---
+
+{content && <SharedBibliography links={content.bibliography} />}

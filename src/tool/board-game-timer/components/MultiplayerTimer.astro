@@ -1,0 +1,58 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div id="multiplayer-timer-panel" class="timer-multiplayer-panel" style="display: none">
+  <div class="multiplayer-header-bar">
+    <button type="button" class="ctrl-bar-btn" id="multi-back-btn" title="Back to Setup">
+      <Icon name="mdi:cog" width="22" height="22" />
+    </button>
+
+    <div class="game-meta-indicators">
+      <div class="meta-indicator">
+        <span class="meta-lbl">{ui.roundLabel || 'Round'}</span>
+        <span class="meta-val" id="multi-round-number">1</span>
+      </div>
+      <div class="meta-indicator">
+        <span class="meta-lbl">{ui.modeLabel || 'Mode'}</span>
+        <span class="meta-val" id="multi-mode-indicator">Normal</span>
+      </div>
+    </div>
+
+    <div class="header-action-group">
+      <button type="button" class="ctrl-bar-btn primary-ctrl" id="multi-pause-btn" title="Pause Game">
+        <Icon name="mdi:pause" width="24" height="24" />
+      </button>
+      <button type="button" class="ctrl-bar-btn" id="multi-reset-btn" title="Reset Game">
+        <Icon name="mdi:refresh" width="22" height="22" />
+      </button>
+    </div>
+  </div>
+
+  <div class="multiplayer-grid" id="multiplayer-players-grid"></div>
+
+  <div class="giant-turn-button-container">
+    <button type="button" id="giant-next-turn-btn" class="giant-next-btn">
+      <Icon name="mdi:skip-next" width="48" height="48" />
+      <span class="giant-btn-lbl">{ui.nextTurn || 'End Turn'}</span>
+      <span class="giant-btn-sub" id="giant-active-player-name">Player Name</span>
+    </button>
+  </div>
+
+  <div id="multi-paused-overlay" class="multi-overlay paused-overlay" style="display: none">
+    <div class="overlay-card">
+      <Icon name="mdi:pause-circle-outline" width="64" height="64" />
+      <h3>{ui.pausedOverlay || 'Game Paused'}</h3>
+      <button type="button" class="resume-hero-btn" id="multi-resume-btn">
+        <Icon name="mdi:play" width="24" height="24" />
+        <span>{ui.resumeGame || 'Resume'}</span>
+      </button>
+    </div>
+  </div>
+</div>

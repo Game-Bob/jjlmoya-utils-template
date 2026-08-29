@@ -1,0 +1,135 @@
+---
+import { buildMapSvg } from './dom-views';
+import { evaluateMap } from './evaluator';
+import { DEFAULT_CONFIG, generateDungeon } from './logic';
+import type { DungeonMapGeneratorUI } from './ui';
+
+interface Props {
+  ui: DungeonMapGeneratorUI;
+}
+
+const { ui } = Astro.props;
+const initialMap = generateDungeon(DEFAULT_CONFIG);
+const initialEvaluation = evaluateMap(initialMap, ui);
+---
+
+<div class="dmg" data-dungeon-generator data-style="dungeon">
+  <script is:inline type="application/json" data-ui set:html={JSON.stringify(ui)} />
+  <section class="dmg-controls" aria-label={ui.styleLabel}>
+    <div class="dmg-field dmg-field-seed">
+      <label for="dmg-seed-input">{ui.seedLabel}</label>
+      <div class="dmg-seed-input-group">
+        <input id="dmg-seed-input" name="seed" type="text" value={DEFAULT_CONFIG.seed} maxlength="48" spellcheck="false" />
+        <button class="dmg-shuffle" type="button" data-random-seed>{ui.randomSeed}</button>
+      </div>
+    </div>
+
+    <fieldset class="dmg-styles">
+      <legend>{ui.styleLabel}</legend>
+      <label class="dmg-style-card">
+        <input type="radio" name="style" value="dungeon" checked />
+        <span class="dmg-style-mark" aria-hidden="true"></span>
+        <strong>{ui.dungeonStyle}</strong>
+        <small>{ui.dungeonStyleHint}</small>
+      </label>
+      <label class="dmg-style-card">
+        <input type="radio" name="style" value="cavern" />
+        <span class="dmg-style-mark dmg-style-mark-cavern" aria-hidden="true"></span>
+        <strong>{ui.cavernStyle}</strong>
+        <small>{ui.cavernStyleHint}</small>
+      </label>
+      <label class="dmg-style-card">
+        <input type="radio" name="style" value="scifi" />
+        <span class="dmg-style-mark dmg-style-mark-scifi" aria-hidden="true"></span>
+        <strong>{ui.scifiStyle}</strong>
+        <small>{ui.scifiStyleHint}</small>
+      </label>
+    </fieldset>
+
+    <div class="dmg-size-section">
+      <span class="dmg-section-label">{ui.sizeLabel}</span>
+      <div class="dmg-size-presets">
+        <button type="button" data-size data-columns="24" data-rows="18" data-density="38" aria-pressed="false">
+          <strong>{ui.sizeCompact}</strong><span>24 x 18</span>
+        </button>
+        <button type="button" data-size data-columns="36" data-rows="26" data-density="48" aria-pressed="true">
+          <strong>{ui.sizeSession}</strong><span>36 x 26</span>
+        </button>
+        <button type="button" data-size data-columns="52" data-rows="38" data-density="58" aria-pressed="false">
+          <strong>{ui.sizeStronghold}</strong><span>52 x 38</span>
+        </button>
+      </div>
+    </div>
+
+    <details class="dmg-grid-tuning">
+      <summary>{ui.fineTuneGrid}</summary>
+      <div class="dmg-measurements">
+        <label class="dmg-range">
+          <span>{ui.columnsLabel}</span>
+          <output data-output="columns">{DEFAULT_CONFIG.columns}</output>
+          <input name="columns" data-live-value type="range" min="16" max="64" value={DEFAULT_CONFIG.columns} />
+        </label>
+        <label class="dmg-range">
+          <span>{ui.rowsLabel}</span>
+          <output data-output="rows">{DEFAULT_CONFIG.rows}</output>
+          <input name="rows" data-live-value type="range" min="14" max="48" value={DEFAULT_CONFIG.rows} />
+        </label>
+        <label class="dmg-range">
+          <span>{ui.densityLabel}</span>
+          <output data-output="density">{DEFAULT_CONFIG.density}</output>
+          <input name="density" data-live-value type="range" min="20" max="75" value={DEFAULT_CONFIG.density} />
+          <small>{ui.densityHint}</small>
+        </label>
+      </div>
+    </details>
+
+    <button class="dmg-generate" type="button" data-generate>{ui.generate}</button>
+  </section>
+
+  <section class="dmg-chart" aria-label={ui.mapRegionLabel}>
+    <div class="dmg-map-frame">
+      <span class="dmg-edit-hint">{ui.editHint}</span>
+      <div class="dmg-map-host" data-map-host set:html={buildMapSvg(initialMap)}></div>
+      <div class="dmg-context-menu" data-context-menu hidden role="menu" aria-label={ui.editCell}>
+        <button type="button" data-context-tool="floor" role="menuitem">{ui.paintFloor}</button>
+        <button type="button" data-context-tool="wall" role="menuitem">{ui.paintWall}</button>
+        <button type="button" data-context-tool="door" role="menuitem">{ui.paintDoor}</button>
+      </div>
+    </div>
+
+    <div class="dmg-map-footer" aria-live="polite">
+      <dl class="dmg-stats">
+        <div><dt>{ui.roomsLabel}</dt><dd data-room-count>{initialMap.rooms.length}</dd></div>
+        <div><dt>{ui.doorsLabel}</dt><dd data-door-count>{initialMap.doorCount}</dd></div>
+        <div><dt>{ui.floorLabel}</dt><dd data-floor-percent>{initialEvaluation.coverage}%</dd></div>
+      </dl>
+      <div class="dmg-legend" aria-label={ui.mapReady}>
+        <span><i data-tile="floor"></i>{ui.legendFloor}</span>
+        <span><i data-tile="wall"></i>{ui.legendWall}</span>
+        <span><i data-tile="door"></i>{ui.legendDoor}</span>
+      </div>
+    </div>
+
+    <div class="dmg-actions">
+      <button class="dmg-action-primary" type="button" data-export-png>{ui.exportPng}</button>
+      <button type="button" data-export-svg>{ui.exportSvg}</button>
+      <button type="button" data-export-print>{ui.exportPrint}</button>
+      <button type="button" data-copy-link>{ui.copyLink}</button>
+      <details class="dmg-map-data">
+        <summary>{ui.mapData}</summary>
+        <div>
+          <button type="button" data-export-json>{ui.exportJson}</button>
+          <label class="dmg-import">
+            <span>{ui.importJson}</span>
+            <input type="file" accept="application/json,.json" data-import-json />
+          </label>
+        </div>
+      </details>
+    </div>
+  </section>
+</div>
+
+<script>
+  import { mountDungeonMapGenerators } from './controller';
+  mountDungeonMapGenerators();
+</script>

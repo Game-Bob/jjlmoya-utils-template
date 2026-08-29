@@ -1,0 +1,49 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="init-add-form" id="init-add-form">
+  <div class="init-form-group">
+    <label for="init-name-input">{labels.namePlaceholder}</label>
+    <input
+      type="text"
+      class="init-input"
+      id="init-name-input"
+      placeholder={labels.namePlaceholder}
+      autocomplete="off"
+    />
+  </div>
+  <div class="init-form-group">
+    <label for="init-value-input">{labels.initiativeLabel}</label>
+    <input
+      type="number"
+      class="init-input"
+      id="init-value-input"
+      placeholder={labels.initiativePlaceholder}
+    />
+  </div>
+  <div class="init-form-group">
+    <label for="init-mod-input">{labels.modifierLabel}</label>
+    <input
+      type="number"
+      class="init-input"
+      id="init-mod-input"
+      placeholder={labels.modifierPlaceholder}
+    />
+  </div>
+  <div class="init-toggle-group" id="init-type-toggle">
+    <button type="button" class="init-toggle-btn player active" data-type="player">
+      {labels.playerLabel}
+    </button>
+    <button type="button" class="init-toggle-btn npc" data-type="npc">
+      {labels.npcLabel}
+    </button>
+  </div>
+  <button type="button" class="init-btn-add" id="init-add-btn">
+    {labels.addButton}
+  </button>
+</div>

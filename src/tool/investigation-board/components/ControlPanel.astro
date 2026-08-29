@@ -1,0 +1,57 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="control-panel">
+  <div class="search-filter-row">
+    <div class="search-box">
+      <input
+        type="text"
+        id="board-search"
+        placeholder={labels.searchPlaceholder}
+        class="form-control search-input"
+        aria-label="Search board elements"
+      />
+    </div>
+    <div class="filter-group">
+      <button type="button" class="btn btn-filter active" data-category="all">
+        {labels.filterAll}
+      </button>
+      <button type="button" class="btn btn-filter" data-category="character">
+        {labels.character}
+      </button>
+      <button type="button" class="btn btn-filter" data-category="clue">
+        {labels.clue}
+      </button>
+      <button type="button" class="btn btn-filter" data-category="location">
+        {labels.location}
+      </button>
+      <button type="button" class="btn btn-filter" data-category="item">
+        {labels.item}
+      </button>
+    </div>
+  </div>
+
+  <div class="board-management-row">
+    <select id="board-select" class="form-control" aria-label="Select board"></select>
+    <button type="button" id="save-board-as-btn" class="btn btn-secondary">Save As</button>
+    <button type="button" id="new-board-btn" class="btn btn-secondary">+ New Board</button>
+  </div>
+
+  <div class="action-buttons-row">
+
+    <button type="button" id="add-card-btn" class="btn btn-primary btn-icon">
+      <span class="btn-text">{labels.addCard}</span>
+    </button>
+    <button type="button" id="add-connection-btn" class="btn btn-secondary btn-icon">
+      <span class="btn-text">{labels.addConnection}</span>
+    </button>
+    <button type="button" id="clear-board-btn" class="btn btn-danger btn-icon">
+      <span class="btn-text">{labels.clearBoard}</span>
+    </button>
+  </div>
+</div>

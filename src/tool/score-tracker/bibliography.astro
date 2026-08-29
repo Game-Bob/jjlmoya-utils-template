@@ -1,0 +1,16 @@
+---
+import { Bibliography as SharedBibliography } from '@jjlmoya/utils-shared';
+import { scoreTracker } from './index';
+import type { KnownLocale } from '../../types';
+
+interface Props {
+  locale?: KnownLocale;
+}
+
+const { locale = 'en' } = Astro.props as Props;
+const loader = scoreTracker.i18n[locale] || scoreTracker.i18n.en;
+const content = await loader?.();
+if (!content) return null;
+---
+
+{content && <SharedBibliography links={content.bibliography} />}

@@ -1,0 +1,53 @@
+---
+import type { EncounterDifficultyUI } from './ui';
+
+interface Props {
+  ui: EncounterDifficultyUI;
+}
+
+const { ui } = Astro.props as Props;
+---
+
+<div class="encounter-calculator" data-encounter-calculator data-ui={JSON.stringify(ui)}>
+  <div class="encounter-intro">{ui.intro}</div>
+  <div class="encounter-presets">
+    <span>{ui.presets}</span>
+    <button type="button" data-preset="classic">{ui.presetClassic}</button>
+    <button type="button" data-preset="boss">{ui.presetBoss}</button>
+    <button type="button" data-preset="swarm">{ui.presetSwarm}</button>
+  </div>
+  <div class="encounter-layout">
+    <section class="encounter-controls" aria-label={ui.partySection}>
+      <div class="control-group">
+        <div class="group-heading"><span>{ui.partySection}</span><span class="eyebrow">D&D 5E 2014</span></div>
+        <label for="party-level">{ui.partyLevel}<output data-output="partyLevel">5</output></label>
+        <input id="party-level" data-input="partyLevel" type="range" min="1" max="20" value="5" />
+        <small>{ui.partyLevelHint}</small>
+        <label for="party-size">{ui.partySize}<output data-output="partySize">4</output></label>
+        <input id="party-size" data-input="partySize" type="range" min="1" max="8" value="4" />
+        <small>{ui.partySizeHint}</small>
+      </div>
+      <div class="control-group">
+        <div class="group-heading"><span>{ui.threatSection}</span><span class="eyebrow">CR + XP</span></div>
+        <label>{ui.monsterCr}<output data-cr-output>2</output></label>
+        <div class="cr-list" data-cr-list aria-label={ui.monsterCr}></div>
+        <button type="button" class="cr-more-button" data-cr-more>{ui.moreCr}</button>
+        <small>{ui.monsterCrHint}</small>
+        <label for="monster-count">{ui.monsterCount}<output data-output="monsterCount">2</output></label>
+        <input id="monster-count" data-input="monsterCount" type="range" min="1" max="15" value="2" />
+        <small>{ui.monsterCountHint}</small>
+      </div>
+      <button type="button" class="reset-button" data-reset>{ui.reset}</button>
+    </section>
+    <section class="encounter-result" aria-live="polite" aria-label={ui.sceneLabel}>
+      <div data-result></div>
+    </section>
+  </div>
+  <p class="rules-note">{ui.rulesNote} <a href="https://www.dndbeyond.com/sources/dnd/basic-rules-2014/building-combat-encounters" target="_blank" rel="noreferrer">{ui.rulesLinkLabel}</a></p>
+</div>
+
+<script>
+  import { mountEncounterCalculator } from './controller';
+  const root = document.querySelector('[data-encounter-calculator]');
+  if (root) mountEncounterCalculator(root);
+</script>

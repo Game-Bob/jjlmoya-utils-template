@@ -1,0 +1,13 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="result-section">
+  <div id="result-display" class="result-display">
+    <div class="result-placeholder">{labels.noHistory || 'Spin to see result'}</div>
+  </div>
+</div>

@@ -1,0 +1,183 @@
+---
+import './scatter-direction-selector.css';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="sds-container" data-tool="scatter-direction-selector" data-ui={JSON.stringify(ui)}>
+  <canvas id="sds-particles" class="sds-particles-canvas"></canvas>
+
+  <header class="sds-header">
+    <div class="sds-header-main">
+      <span class="sds-subtitle">{ui.dragHint}</span>
+    </div>
+    <button type="button" id="sds-sound-toggle" class="sds-sound-btn" aria-label="Toggle Sound">
+      <svg id="sds-sound-on-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      </svg>
+      <svg id="sds-sound-off-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+    </button>
+  </header>
+
+  <main class="sds-grid">
+    <section class="sds-compass-area">
+      <div class="sds-compass-wrapper">
+        <div id="sds-compass" class="sds-compass">
+          <div class="sds-compass-ring"></div>
+          <svg class="sds-compass-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <radialGradient id="compass-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="var(--sds-glow-inner)" stop-opacity="0.15"></stop>
+                <stop offset="100%" stop-color="var(--sds-glow-outer)" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+            <circle cx="100" cy="100" r="95" fill="url(#compass-glow)" stroke="var(--sds-border-glow)" stroke-width="2"></circle>
+            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--sds-border)" stroke-width="1" stroke-dasharray="2, 4"></circle>
+            <g id="sds-ticks"></g>
+          </svg>
+          <div id="sds-pointer" class="sds-pointer sds-pointer-wind">
+            <svg viewBox="0 0 40 160" class="sds-pointer-svg">
+              <path d="M20,0 L35,60 L24,55 L20,160 L16,55 L5,60 Z" fill="var(--sds-accent)"></path>
+            </svg>
+          </div>
+          <div id="sds-scatter-pointer" class="sds-pointer sds-pointer-scatter" style="display: none;">
+            <svg viewBox="0 0 40 160" class="sds-pointer-svg">
+              <path d="M20,4 L30,50 L26,44 L32,60 L22,52 L20,160 L18,52 L8,60 L14,44 L10,50 Z" fill="var(--sds-danger)"></path>
+            </svg>
+          </div>
+          <div class="sds-center-core">
+            <div id="sds-sigil-target" class="sds-sigil">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <line x1="1" y1="12" x2="23" y2="12"></line>
+              </svg>
+            </div>
+            <div id="sds-sigil-warning" class="sds-sigil">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10.5" stroke="currentColor" stroke-width="0.5" opacity="0.25"></circle>
+                <text id="sds-warning-dist" x="12" y="13" text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="900" stroke="none" fill="currentColor">2"</text>
+              </svg>
+            </div>
+            <div id="sds-digital-display" class="sds-digital-display">
+              <div id="sds-display-status" class="sds-display-status">READY</div>
+              <div id="sds-display-nums" class="sds-display-nums">000°</div>
+            </div>
+          </div>
+        </div>
+        <canvas id="sds-anim-canvas" class="sds-anim-canvas"></canvas>
+      </div>
+      <ol class="sds-guide">
+        <li class="sds-guide-step">
+          <span class="sds-guide-num">1</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sds-guide-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          <span class="sds-guide-label">{ui.guideStep1}</span>
+        </li>
+        <li class="sds-guide-step">
+          <span class="sds-guide-num">2</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sds-guide-icon">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span class="sds-guide-label">{ui.guideStep2}</span>
+        </li>
+        <li class="sds-guide-step sds-guide-step-block">
+          <span class="sds-guide-num">3</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sds-guide-icon">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <div class="sds-guide-outcomes">
+            <span class="sds-guide-outcome sds-guide-outcome--hit">
+              <span class="sds-guide-dot sds-guide-dot-hit"></span>
+              {ui.guideStep3}
+            </span>
+            <span class="sds-guide-outcome sds-guide-outcome--scatter">
+              <span class="sds-guide-dot sds-guide-dot-scatter"></span>
+              {ui.guideStep3Scatter}
+            </span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="sds-control-panel">
+      <div class="sds-panel-card">
+        <h2 class="sds-panel-title">{ui.setupTitle}</h2>
+
+        <div class="sds-control-group">
+          <span class="sds-label">{ui.sectorsLabel}</span>
+          <div class="sds-segmented-control">
+            <button type="button" class="sds-segment-btn active" data-sectors="8">{ui.sectors8}</button>
+            <button type="button" class="sds-segment-btn" data-sectors="12">{ui.sectors12}</button>
+          </div>
+        </div>
+
+        <div class="sds-control-group">
+          <span class="sds-label">{ui.scatterModeLabel}</span>
+          <div class="sds-segmented-control">
+            <button type="button" id="sds-mode-random" class="sds-segment-btn active" data-mode="random">{ui.scatterModeRandom}</button>
+            <button type="button" id="sds-mode-wind" class="sds-segment-btn" data-mode="wind">{ui.scatterModeWind}</button>
+          </div>
+          <span id="sds-wind-hint" class="sds-mode-hint" style="display: none;">{ui.scatterModeWindHint}</span>
+        </div>
+
+        <div class="sds-control-group">
+          <label class="sds-label" for="sds-dice-select">{ui.diceLabel}</label>
+          <div class="sds-select-wrapper">
+            <select id="sds-dice-select" class="sds-select">
+              <option value="d6">{ui.diceD6}</option>
+              <option value="2d6">{ui.dice2D6}</option>
+              <option value="d10">{ui.diceD10}</option>
+              <option value="custom">{ui.diceCustom}</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="sds-custom-dist-wrapper" class="sds-control-group" style="display: none;">
+          <label class="sds-label" for="sds-custom-max">
+            <span>{ui.customMaxLabel}</span>
+          </label>
+          <input type="number" id="sds-custom-max" class="sds-input" value="12" min="1" max="100" />
+        </div>
+
+        <div class="sds-control-group">
+          <div class="sds-label-row">
+            <label class="sds-label" for="sds-hit-chance">{ui.hitChanceLabel}</label>
+            <span id="sds-hit-chance-val" class="sds-value-display">33%</span>
+          </div>
+          <input type="range" id="sds-hit-chance" class="sds-slider" min="0" max="100" value="33" />
+        </div>
+
+        <button type="button" id="sds-roll-btn" class="sds-btn-primary">
+          <span class="sds-btn-glow"></span>
+          <span>{ui.rollButton}</span>
+        </button>
+      </div>
+
+      <div class="sds-panel-card">
+        <div class="sds-header-row">
+          <h2 class="sds-panel-title">{ui.historyTitle}</h2>
+          <button type="button" id="sds-clear-history" class="sds-btn-secondary">{ui.clearHistory}</button>
+        </div>
+        <div id="sds-history-list" class="sds-history-list"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="./client.ts"></script>

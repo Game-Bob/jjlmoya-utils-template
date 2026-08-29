@@ -1,0 +1,48 @@
+---
+import WheelCanvas from './components/WheelCanvas.astro';
+import SegmentEditor from './components/SegmentEditor.astro';
+import SpinResult from './components/SpinResult.astro';
+import SpinHistory from './components/SpinHistory.astro';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="tool-main-card" data-ui={JSON.stringify(ui)}>
+  <div class="wheel-dashboard">
+    <div class="wheel-layout">
+      
+      <div class="wheel-canvas-section">
+        <div class="canvas-card">
+          <WheelCanvas labels={ui} />
+          <div class="wheel-pointer" aria-hidden="true"></div>
+        </div>
+        <button type="button" id="spin-btn" class="spin-button">{ui.spinButton || 'Spin the Wheel'}</button>
+        <SpinResult labels={ui} />
+      </div>
+
+      <div class="wheel-controls-section">
+        <div class="tab-container">
+          <div class="tab-headers">
+            <button type="button" class="tab-header active" data-tab="editor">{ui.presetLabel || 'Customize'}</button>
+            <button type="button" class="tab-header" data-tab="history">{ui.historyTitle || 'History'}</button>
+          </div>
+          <div class="tab-contents">
+            <div class="tab-pane active" id="pane-editor">
+              <SegmentEditor labels={ui} />
+            </div>
+            <div class="tab-pane" id="pane-history">
+              <SpinHistory labels={ui} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="./client.ts"></script>

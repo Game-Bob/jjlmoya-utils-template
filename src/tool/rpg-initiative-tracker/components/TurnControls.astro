@@ -1,0 +1,28 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="init-round-display" id="init-round-display">
+  <span class="init-round-number" id="init-round-label">
+    {labels.roundLabel}: --
+  </span>
+</div>
+
+<div class="init-turn-controls" id="init-turn-controls">
+  <button type="button" class="init-turn-btn primary" id="init-start-btn">
+    {labels.startCombat}
+  </button>
+  <button type="button" class="init-turn-btn" id="init-prev-btn" disabled>
+    {labels.prevTurn}
+  </button>
+  <button type="button" class="init-turn-btn" id="init-next-btn" disabled>
+    {labels.nextTurn}
+  </button>
+  <button type="button" class="init-turn-btn danger" id="init-end-btn" disabled>
+    {labels.endCombat}
+  </button>
+</div>

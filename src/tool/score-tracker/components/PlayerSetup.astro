@@ -1,0 +1,33 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="player-setup-panel" id="player-setup-panel">
+  <h3 class="panel-title">Players</h3>
+  <div class="add-player-row">
+    <input
+      type="text"
+      class="add-player-input"
+      id="add-player-input"
+      placeholder={labels.playerNamePlaceholder}
+      aria-label={labels.playerNamePlaceholder || "Player name"}
+      autocomplete="off"
+    />
+    <button type="button" class="btn-score-action primary" id="add-player-btn">
+      {labels.addPlayer}
+    </button>
+  </div>
+  <div class="player-list" id="player-list"></div>
+  <div class="score-round-actions">
+    <button type="button" class="btn-score-action" id="start-round-btn">
+      {labels.startRound}
+    </button>
+    <button type="button" class="btn-score-action" id="next-round-btn" style="display:none">
+      {labels.nextRound}
+    </button>
+  </div>
+</div>

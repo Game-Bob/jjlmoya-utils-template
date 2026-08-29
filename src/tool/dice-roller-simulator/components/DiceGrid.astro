@@ -1,0 +1,55 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+
+const diceTypes = [
+  { name: 'D4', max: 4, icon: 'mdi:triangle' },
+  { name: 'D6', max: 6, icon: 'mdi:square' },
+  { name: 'D8', max: 8, icon: 'mdi:octagram' },
+  { name: 'D10', max: 10, icon: 'mdi:rhombus' },
+  { name: 'D12', max: 12, icon: 'mdi:hexagon-slice-6' },
+  { name: 'D20', max: 20, icon: 'mdi:hexagon-multiple' },
+  { name: 'D100', max: 100, icon: 'mdi:circle-slice-8' },
+];
+---
+
+<div class="dice-forge-panel">
+  <div class="panel-header">
+    <h3>{labels.selectDice || "Dice Selection"}</h3>
+    <button type="button" id="clear-pool-btn" class="btn-text-action">Clear Pool</button>
+  </div>
+
+  <div class="dice-selectors-column">
+    {diceTypes.map((die) => (
+      <div class="die-control-row" data-die-type={die.name} data-die-max={die.max}>
+        <button type="button" class="die-adjust-btn dec-btn" disabled aria-label="Decrease">-</button>
+        
+        <div class="die-main-button" title="Click to add die">
+          <div class="die-visual-icon">
+            <Icon name={die.icon} width="36" height="36" />
+            <span class="die-counter-badge hidden">0</span>
+          </div>
+          <span class="die-name-label">{die.name}</span>
+        </div>
+
+        <button type="button" class="die-adjust-btn inc-btn" aria-label="Increase">+</button>
+      </div>
+    ))}
+  </div>
+
+  <div class="modifier-row-panel">
+    <div class="modifier-box">
+      <label class="config-label" for="modifier-input">{labels.modifierLabel || "Modifier"}</label>
+      <div class="modifier-input-wrapper">
+        <button type="button" id="mod-dec-btn" class="mod-adjust">-</button>
+        <input type="number" id="modifier-input" class="mod-val-input" value="0" readonly />
+        <button type="button" id="mod-inc-btn" class="mod-adjust">+</button>
+      </div>
+    </div>
+  </div>
+</div>

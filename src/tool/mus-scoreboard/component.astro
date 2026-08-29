@@ -1,0 +1,179 @@
+---
+import './online-mus-scoreboard.css';
+import { musScoreboard } from './index';
+import type { KnownLocale } from '../../types';
+import type { MusScoreboardUI } from './ui';
+
+interface Props {
+  ui?: MusScoreboardUI;
+  locale?: KnownLocale;
+}
+
+const props = Astro.props as Props;
+let ui = props.ui;
+
+if (!ui) {
+  const locale = props.locale || 'en';
+  const loader = musScoreboard.i18n[locale] || musScoreboard.i18n.en;
+  const content = await loader?.();
+  ui = content?.ui;
+}
+
+if (!ui) return null;
+---
+
+<div class="mus-scoreboard" data-mus-scoreboard data-ui={JSON.stringify(ui)}>
+  <div class="mus-board-card">
+    <section class="mus-onboarding" aria-labelledby="mus-how-to-use">
+      <div class="mus-onboarding-mark" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div>
+        <p class="mus-kicker" id="mus-how-to-use">{ui.liveMatch}</p>
+        <p class="mus-onboarding-copy">{ui.onboarding}</p>
+      </div>
+    </section>
+
+    <form class="mus-config" data-config-form>
+      <div class="mus-config-heading">
+        <div>
+          <p class="mus-kicker">{ui.matchSettings}</p>
+          <h2>{ui.matchSettings}</h2>
+        </div>
+        <span class="mus-rule-seal" aria-hidden="true">MUS</span>
+      </div>
+      <div class="mus-name-grid">
+        <label class="mus-field">
+          <span>{ui.pairOneLabel}</span>
+          <input type="text" maxlength="24" data-pair-name="0" value={ui.pairOneDefault} required />
+        </label>
+        <label class="mus-field">
+          <span>{ui.pairTwoLabel}</span>
+          <input type="text" maxlength="24" data-pair-name="1" value={ui.pairTwoDefault} required />
+        </label>
+      </div>
+      <div class="mus-rules-grid">
+        <fieldset class="mus-choice-group">
+          <legend>{ui.targetPointsLabel}</legend>
+          <p>{ui.targetPointsHint}</p>
+          <div class="mus-choice-row">
+            <label><input type="radio" name="target-points" data-target-input="30" value="30" /><span>{ui.pointsOption30}</span></label>
+            <label><input type="radio" name="target-points" data-target-input="40" value="40" checked /><span>{ui.pointsOption40}</span></label>
+            <label><input type="radio" name="target-points" data-target-input="50" value="50" /><span>{ui.pointsOption50}</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="mus-choice-group">
+          <legend>{ui.gamesToWinLabel}</legend>
+          <p>{ui.gamesToWinHint}</p>
+          <div class="mus-choice-row">
+            <label><input type="radio" name="games-to-win" data-games-input="1" value="1" /><span>{ui.gamesOption1}</span></label>
+            <label><input type="radio" name="games-to-win" data-games-input="2" value="2" checked /><span>{ui.gamesOption2}</span></label>
+            <label><input type="radio" name="games-to-win" data-games-input="3" value="3" /><span>{ui.gamesOption3}</span></label>
+          </div>
+        </fieldset>
+      </div>
+      <fieldset class="mus-deck-group">
+        <legend>{ui.deckLabel}</legend>
+        <p>{ui.deckHint}</p>
+        <div class="mus-choice-row">
+          <label><input type="radio" name="mus-deck" data-deck-input="spanish" value="spanish" checked /><span>{ui.spanishDeck}</span></label>
+          <label><input type="radio" name="mus-deck" data-deck-input="french" value="french" /><span>{ui.frenchDeck}</span></label>
+        </div>
+        <p class="mus-deck-notice" data-french-deck-notice hidden role="status"><span aria-hidden="true">i</span>{ui.frenchDeckNotice}</p>
+      </fieldset>
+      <p class="mus-form-message" data-config-message hidden role="alert"></p>
+      <button class="mus-primary-button" type="submit">{ui.startMatch}</button>
+    </form>
+
+    <section class="mus-match-panel" data-match-panel hidden aria-labelledby="mus-live-match-heading">
+    <div class="mus-match-header">
+      <div>
+        <p class="mus-kicker">{ui.liveMatch}</p>
+        <h2 id="mus-live-match-heading"><span data-target-points>40</span> {ui.targetLabel}</h2>
+      </div>
+      <div class="mus-match-meta">
+        <span><strong data-games-to-win>2</strong> {ui.vacaLabel}</span>
+        <button class="mus-quiet-button" type="button" data-action="reset">{ui.resetMatch}</button>
+      </div>
+    </div>
+
+    <div class="mus-felt" data-mus-felt data-hand-team="0" aria-label={ui.visualScoreLabel}>
+      <div class="mus-felt-caption mus-felt-caption-left" data-pair-label="0"></div>
+      <div class="mus-felt-caption mus-felt-caption-right" data-pair-label="1"></div>
+      <div class="mus-hand-choices" role="group" aria-label={ui.handLabel}>
+        <button class="mus-hand-choice mus-hand-choice-left" type="button" data-action="set-hand" data-team="0" data-hand-choice="0" aria-pressed="true"><span data-hand-choice-label="0">A</span></button>
+        <button class="mus-hand-choice mus-hand-choice-right" type="button" data-action="set-hand" data-team="1" data-hand-choice="1" aria-pressed="false"><span data-hand-choice-label="1">B</span></button>
+      </div>
+      <div class="mus-score-arc mus-score-arc-left" data-score-track="0" role="progressbar" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><span class="mus-score-marker" data-score-marker="0" aria-hidden="true"></span></div>
+      <div class="mus-score-arc mus-score-arc-right" data-score-track="1" role="progressbar" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><span class="mus-score-marker" data-score-marker="1" aria-hidden="true"></span></div>
+      <span class="mus-center-suit" data-hand-indicator aria-label={ui.handLabel}>M</span>
+      <div class="mus-felt-center">
+        <span class="mus-center-label">{ui.scoreLabel}</span>
+        <strong><span data-score="0">0</span><i>:</i><span data-score="1">0</span></strong>
+        <span class="mus-center-status" data-status-message>{ui.matchSaved}</span>
+      </div>
+    </div>
+
+    <div class="mus-pair-score-row">
+      <article class="mus-pair-card mus-pair-card-left">
+        <header><span class="mus-pair-index">A</span><h3 data-pair-label="0"></h3><span class="mus-game-count"><span data-games="0">0</span> {ui.gameLabel}</span></header>
+        <p class="mus-score-breakdown" data-breakdown="0">0 {ui.amarracoPlural} + 0 {ui.stonePlural}</p>
+        <p class="mus-remaining" data-remaining="0">40 {ui.pointsToGo}</p>
+        <div class="mus-tally" data-tally="0" aria-label={ui.stonesLabel}></div>
+        <div class="mus-score-actions">
+          <button type="button" data-action="add-one" data-team="0">+1 <span>{ui.addStone}</span></button>
+          <button type="button" data-action="add-five" data-team="0">+5 <span>{ui.addAmarraco}</span></button>
+          <button class="mus-close-button" type="button" data-action="close-game" data-team="0" disabled>{ui.closeGame}</button>
+        </div>
+      </article>
+      <article class="mus-pair-card mus-pair-card-right">
+        <header><span class="mus-pair-index">B</span><h3 data-pair-label="1"></h3><span class="mus-game-count"><span data-games="1">0</span> {ui.gameLabel}</span></header>
+        <p class="mus-score-breakdown" data-breakdown="1">0 {ui.amarracoPlural} + 0 {ui.stonePlural}</p>
+        <p class="mus-remaining" data-remaining="1">40 {ui.pointsToGo}</p>
+        <div class="mus-tally" data-tally="1" aria-label={ui.stonesLabel}></div>
+        <div class="mus-score-actions">
+          <button type="button" data-action="add-one" data-team="1">+1 <span>{ui.addStone}</span></button>
+          <button type="button" data-action="add-five" data-team="1">+5 <span>{ui.addAmarraco}</span></button>
+          <button class="mus-close-button" type="button" data-action="close-game" data-team="1" disabled>{ui.closeGame}</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="mus-status-strip">
+      <div><span class="mus-status-dot"></span><span data-status-message>{ui.matchSaved}</span></div>
+      <div class="mus-secondary-actions"><button type="button" data-action="undo">{ui.undo}</button><span class="mus-history-label">{ui.lastAction}</span></div>
+    </div>
+    <details class="mus-history-details">
+      <summary>{ui.historyTitle}</summary>
+      <ol data-history-list><li class="mus-history-empty">{ui.noHistory}</li></ol>
+    </details>
+    </section>
+
+    <div class="mus-confirmation" data-confirmation hidden>
+      <div class="mus-confirmation-backdrop" data-action="cancel-confirmation" aria-hidden="true"></div>
+      <section class="mus-confirmation-card" role="dialog" aria-modal="true" aria-labelledby="mus-confirmation-title" aria-describedby="mus-confirmation-message">
+        <span class="mus-confirmation-mark" aria-hidden="true">M</span>
+        <p class="mus-kicker">{ui.confirmationTitle}</p>
+        <h2 id="mus-confirmation-title" data-confirmation-title>{ui.confirmationTitle}</h2>
+        <p id="mus-confirmation-message" data-confirmation-message></p>
+        <div class="mus-confirmation-actions">
+          <button class="mus-secondary-button" type="button" data-action="cancel-confirmation">{ui.cancelAction}</button>
+          <button class="mus-primary-button" type="button" data-action="accept-confirmation">{ui.confirmAction}</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { mountMusScoreboard } from './controller';
+
+  const root = document.querySelector<HTMLElement>('[data-mus-scoreboard]');
+  if (root) {
+    const ui = JSON.parse(root.dataset.ui || '{}');
+    mountMusScoreboard(root, ui);
+  }
+</script>

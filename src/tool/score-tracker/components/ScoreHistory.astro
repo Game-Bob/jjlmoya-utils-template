@@ -1,0 +1,25 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="score-history-panel" id="score-history-panel">
+  <div class="tabs-nav-score">
+    <button type="button" class="tab-score-btn active" data-score-tab="leaderboard-tab">{labels.leaderboardTitle}</button>
+    <button type="button" class="tab-score-btn" data-score-tab="history-tab">{labels.historyTitle}</button>
+  </div>
+  <div class="tab-score-pane active" id="leaderboard-tab">
+    <div id="leaderboard-inline"></div>
+  </div>
+  <div class="tab-score-pane" id="history-tab">
+    <div id="history-content">
+      <div class="no-history-msg">{labels.noRoundsYet}</div>
+    </div>
+    <button type="button" class="btn-score-action danger" id="undo-round-btn" style="display:none;margin-top:0.75rem">
+      {labels.undoRound}
+    </button>
+  </div>
+</div>

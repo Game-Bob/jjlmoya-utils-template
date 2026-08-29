@@ -1,0 +1,77 @@
+---
+import './first-player-selector.css';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="selector-container" data-tool="first-player-selector" data-ui={JSON.stringify(ui)}>
+  <div class="mode-selector" role="group" aria-label="Selection mode">
+    <button class="mode-btn active" id="btn-mode-finger" type="button" title={ui.fingerMode}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.5 11.5a3 3 0 1 0-4-4"/>
+        <path d="M12 17V7"/>
+        <path d="M8.5 8.5a3 3 0 0 0 1 5.5"/>
+        <path d="M10.5 14.5A5 5 0 0 0 17 11"/>
+        <path d="M7 19a7 7 0 0 1 10 0"/>
+      </svg>
+      <span>{ui.fingerMode}</span>
+    </button>
+    <button class="mode-btn" id="btn-mode-wheel" type="button" title={ui.wheelMode}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8"/>
+        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+      </svg>
+      <span>{ui.wheelMode}</span>
+    </button>
+  </div>
+
+
+  <button class="icon-btn sound-btn active" id="btn-sound" type="button" title={ui.soundOn}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+    </svg>
+  </button>
+
+  <button class="icon-btn reset-btn" id="btn-reset" type="button" title={ui.reset}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="23 4 23 10 17 10"/>
+      <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+    </svg>
+  </button>
+
+
+  <div class="wheel-actions" id="wheel-actions" style="display: none;">
+    <button class="action-btn spin" id="btn-spin" type="button">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <polygon points="6 3 20 12 6 21 6 3"/>
+      </svg>
+      {ui.start}
+    </button>
+    <button class="action-btn clear" id="btn-clear" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+      {ui.clearPlayers}
+    </button>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas id="selector-canvas" class="selector-canvas"></canvas>
+  </div>
+
+  <div class="instructions-overlay">
+    <div class="instructions-text" id="instructions-text">
+      {ui.instructions}
+    </div>
+    <div class="instructions-status" id="instructions-status"></div>
+  </div>
+</div>
+
+<script src="./client.ts"></script>

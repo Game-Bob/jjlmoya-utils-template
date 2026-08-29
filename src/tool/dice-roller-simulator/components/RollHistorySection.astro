@@ -1,0 +1,26 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="tabletop-history-panel">
+  <div class="panel-header">
+    <h3>{labels.historyTitle || "Roll Logs"}</h3>
+    <button type="button" id="clear-history-btn" class="btn-clear-all" title={labels.clearButton || "Clear History"}>
+      <Icon name="mdi:trash-can-outline" width="18" height="18" />
+    </button>
+  </div>
+
+  <div class="history-scroll-viewport">
+    <div id="no-history-msg" class="history-empty-message">
+      <Icon name="mdi:dice-multiple-outline" width="48" height="48" class="empty-icon" />
+      <p>{labels.noHistory || "Roll dice to populate log history."}</p>
+    </div>
+    <div id="history-list" class="history-cards-list"></div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div id="stats-modal" class="timer-modal-backdrop" style="display: none">
+  <div class="stats-modal-card">
+    <div class="modal-header">
+      <div class="header-title-group">
+        <Icon name="mdi:chart-bar" width="28" height="28" />
+        <h3>{ui.statsTitle || 'Game Statistics'}</h3>
+      </div>
+      <button type="button" id="stats-close-btn" class="modal-close-btn" aria-label="Close">
+        <Icon name="mdi:close" width="24" height="24" />
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="general-stats-grid">
+        <div class="stat-card-mini">
+          <span class="mini-lbl">{ui.totalGameTime || 'Total Time'}</span>
+          <span class="mini-val" id="stats-total-time">00:00:00</span>
+        </div>
+        <div class="stat-card-mini">
+          <span class="mini-lbl">{ui.totalRounds || 'Total Rounds'}</span>
+          <span class="mini-val" id="stats-total-rounds">0</span>
+        </div>
+        <div class="stat-card-mini highlighted-stat">
+          <span class="mini-lbl">{ui.slowestPlayer || 'Slowest Player'}</span>
+          <span class="mini-val" id="stats-slowest-player">-</span>
+        </div>
+      </div>
+
+      <div class="charts-section">
+        <h4>{ui.playerPerformance || 'Player Time Analysis'}</h4>
+        <div class="players-ranking-list" id="stats-players-ranking"></div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" id="stats-restart-btn" class="modal-action-btn primary">
+        <Icon name="mdi:autorenew" width="20" height="20" />
+        <span>{ui.playAgain || 'New Game'}</span>
+      </button>
+    </div>
+  </div>
+</div>

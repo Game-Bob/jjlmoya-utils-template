@@ -1,0 +1,19 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="leaderboard-panel" id="leaderboard-panel">
+  <h3 class="panel-title">{labels.leaderboardTitle}</h3>
+  <div class="leaderboard-list" id="leaderboard-list">
+    <div class="no-round-message">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+      <span>{labels.noPlayersHint}</span>
+    </div>
+  </div>
+</div>

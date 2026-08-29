@@ -1,0 +1,34 @@
+---
+import './score-tracker.css';
+import PlayerSetup from './components/PlayerSetup.astro';
+import RoundScoring from './components/RoundScoring.astro';
+import Leaderboard from './components/Leaderboard.astro';
+import ScoreHistory from './components/ScoreHistory.astro';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="score-main-wrapper" data-ui={JSON.stringify(ui)}>
+  <PlayerSetup labels={ui} />
+  <div class="score-layout">
+    <RoundScoring labels={ui} />
+    <div>
+      <Leaderboard labels={ui} />
+      <ScoreHistory labels={ui} />
+    </div>
+  </div>
+  <div class="score-footer-actions">
+    <button type="button" class="btn-score-action danger" id="reset-game-btn">
+      {ui.resetGame}
+    </button>
+    <button type="button" class="btn-score-action danger" id="reset-all-btn">
+      {ui.resetAllLabel}
+    </button>
+  </div>
+</div>
+
+<script src="./client.ts"></script>

@@ -1,0 +1,22 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="editor-card">
+  <span class="editor-label">{labels.presetLabel || 'Presets'}</span>
+  <div class="preset-group">
+    <button type="button" class="preset-btn active" data-preset="yesno">{labels.presetYesNo || 'Yes / No'}</button>
+    <button type="button" class="preset-btn" data-preset="numbers">{labels.presetNumbers || 'Numbers 1-6'}</button>
+    <button type="button" class="preset-btn" data-preset="actions">{labels.presetActions || 'Actions'}</button>
+    <button type="button" class="preset-btn" data-preset="d20">{labels.presetD20 || 'D20'}</button>
+    <button type="button" class="preset-btn" data-preset="alignment">{labels.presetAlignment || 'Alignment'}</button>
+    <button type="button" class="preset-btn" data-preset="loot">{labels.presetLoot || 'Loot Rarity'}</button>
+    <button type="button" class="preset-btn" data-preset="custom">{labels.presetCustom || 'Custom'}</button>
+  </div>
+  <div class="segment-list" id="segment-list"></div>
+  <button type="button" id="add-segment-btn" class="btn-add-segment">{labels.addSegmentLabel || 'Add Segment'}</button>
+</div>

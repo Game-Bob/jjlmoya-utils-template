@@ -1,0 +1,22 @@
+---
+import './board-game-timer.css';
+import SetupPanel from './components/SetupPanel.astro';
+import DuelTimer from './components/DuelTimer.astro';
+import MultiplayerTimer from './components/MultiplayerTimer.astro';
+import StatsModal from './components/StatsModal.astro';
+
+interface Props {
+  ui: Record<string, string>;
+}
+
+const { ui } = Astro.props;
+---
+
+<div class="timer-main-wrapper" data-ui={JSON.stringify(ui)}>
+  <SetupPanel ui={ui} />
+  <DuelTimer ui={ui} />
+  <MultiplayerTimer ui={ui} />
+  <StatsModal ui={ui} />
+</div>
+
+<script src="./client.ts"></script>

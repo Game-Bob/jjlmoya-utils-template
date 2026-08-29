@@ -1,0 +1,17 @@
+---
+interface Props {
+  labels: Record<string, string>;
+}
+
+const { labels } = Astro.props;
+---
+
+<div class="history-section">
+  <div class="history-header">
+    <h3 class="history-title">{labels.historyTitle || 'Spin History'}</h3>
+    <button type="button" id="clear-history-btn" class="btn-clear-history">{labels.clearHistory || 'Clear'}</button>
+  </div>
+  <div class="history-list" id="history-list">
+    <div class="history-empty" id="history-empty">{labels.noHistory || 'No spins yet.'}</div>
+  </div>
+</div>
