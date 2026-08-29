@@ -108,7 +108,7 @@ function initializeGit(projectDirectory, repositoryName) {
 
 function createRemoteRepository(projectDirectory, repositoryName) {
     const ghCommand = process.platform === 'win32' ? 'gh.exe' : 'gh';
-    run(ghCommand, ['repo', 'create', `Game-Bob/${repositoryName}`, '--public', '--source', projectDirectory, '--remote', 'origin', '--push']);
+    run(ghCommand, ['repo', 'create', `Game-Bob/${repositoryName}`, '--private', '--source', projectDirectory, '--remote', 'origin', '--push']);
 }
 
 function run(command, args) {
