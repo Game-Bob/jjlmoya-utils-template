@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'jeux-de-societe';
 const title = 'Utilitaires et Outils pour Jeux de Société';
-const description = 'Outils gratuits pour jeux de société et de rôle: lancez des dés virtuels avec des statistiques en direct, gérez les temps de tour avec un chronomètre multijoueur et bien plus. Fonctionne dans votre navigateur, sans inscription, 100 % privé.';
+const description = 'Outils gratuits pour jeux de société et de rôle: dés virtuels avec statistiques et minuteur pour gérer les tours. Dans le navigateur, sans inscription et privé.';
 
 export const content: CategoryLocaleContent = {
   slug,

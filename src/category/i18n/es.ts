@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'juegos-de-mesa';
 const title = 'Utilidades y Herramientas para Juegos de Mesa';
-const description = 'Herramientas gratuitas para juegos de mesa y rol: lanza dados virtuales con estadísticas, controla los tiempos de tus partidas con un temporizador multijugador y mucho más. Todo en tu navegador, sin registro y 100% privado.';
+const description = 'Herramientas gratuitas para juegos de mesa y rol: dados virtuales con estadísticas y temporizador para controlar los turnos. En tu navegador, sin registro y privado.';
 
 export const content: CategoryLocaleContent = {
   slug,

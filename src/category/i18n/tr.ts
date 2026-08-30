@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'masa-oyunlari';
 const title = 'Masa Oyunu Araçları ve Yardımcı Programları';
-const description = 'Masa oyunları ve RPG için ücretsiz araçlar: canlı istatistiklerle sanal zar atma, çok oyunculu süreölçer ile tur sürelerini yönetme ve daha fazlası. Tarayıcıda çalışır, kayıt gerekmez, %100 gizli.';
+const description = 'Masa oyunları ve RPG için ücretsiz araçlar: istatistikli sanal zarlar ve turları yönetmek için süreölçer. Tarayıcıda çalışır, kayıt gerekmez ve özeldir.';
 
 export const content: CategoryLocaleContent = {
   slug,

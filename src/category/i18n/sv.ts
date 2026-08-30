@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'bordspel';
 const title = 'Brädspelsverktyg & Hjälpmedel';
-const description = 'Gratis verktyg för brädspel och rollspel: slå virtuella tärningar med realtidsstatistik, håll koll på speltid med en multitimer och mycket mer. Fungerar i webbläsaren, ingen registrering krävs, 100 % privat.';
+const description = 'Gratis verktyg för brädspel och rollspel: virtuella tärningar med statistik och timer för att hålla koll på turer. I webbläsaren, utan registrering och privat.';
 
 export const content: CategoryLocaleContent = {
   slug,

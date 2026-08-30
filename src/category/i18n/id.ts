@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'permainan-papan';
 const title = 'Utilitas & Alat untuk Permainan Papan';
-const description = 'Alat gratis untuk permainan papan dan RPG: lempar dadu virtual dengan statistik langsung, kelola waktu giliran dengan timer multipemain, dan banyak lagi. Berfungsi di browser, tanpa pendaftaran, 100% pribadi.';
+const description = 'Alat gratis untuk permainan papan dan RPG: dadu virtual dengan statistik serta timer untuk mengatur giliran. Berjalan di browser, tanpa pendaftaran dan pribadi.';
 
 export const content: CategoryLocaleContent = {
   slug,

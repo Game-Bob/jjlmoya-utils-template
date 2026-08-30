@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'giochi-da-tavolo';
 const title = 'Utilità e Strumenti per Giochi da Tavolo';
-const description = 'Strumenti gratuiti per giochi da tavolo e di ruolo: lancia dadi virtuali con statistiche in tempo reale, gestisci i tempi di turno con un cronometro multigiocatore e molto altro. Funziona nel browser, senza registrazione, 100% privato.';
+const description = 'Strumenti gratuiti per giochi da tavolo e di ruolo: dadi virtuali con statistiche e timer per gestire i turni. Nel browser, senza registrazione e in privato.';
 
 export const content: CategoryLocaleContent = {
   slug,

@@ -2,7 +2,7 @@ import type { CategoryLocaleContent } from '../../types';
 
 const slug = 'gry-planszowe';
 const title = 'Narzędzia i Pomocniki do Gier Planszowych';
-const description = 'Darmowe narzędzia do gier planszowych i RPG: rzucaj wirtualnymi kośćmi z statystykami na żywo, zarządzaj czasem tur z multi-timerem i nie tylko. Działa w przeglądarce, bez rejestracji, 100% prywatności.';
+const description = 'Darmowe narzędzia do gier planszowych i RPG: wirtualne kości ze statystykami oraz timer do kontroli tur. Działa w przeglądarce, bez rejestracji i prywatnie.';
 
 export const content: CategoryLocaleContent = {
   slug,
