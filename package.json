@@ -36,6 +36,7 @@
         "dev": "astro dev --host",
         "start": "astro dev",
         "build": "astro build",
+        "prebuild": "node scripts/validate-icons.mjs",
         "preview": "astro preview",
         "astro": "astro",
         "lint": "eslint src/ --max-warnings 0 && stylelint \"src/**/*.{css,astro}\"",
